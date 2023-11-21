@@ -1,8 +1,8 @@
-package com.example.backend.controller.usercontroller;
+package com.example.backend.controller;
 
 
 
-import com.example.backend.controller.Controller;
+import com.example.backend.controller.usercontroller.UserController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,12 +13,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "frontControllerServlet",urlPatterns = "/*")
+@WebServlet(name = "frontControllerServlet",urlPatterns = "/user/*") // /user 밑으로 들어온 요청
 public class UserFrontController extends HttpServlet {
     private Map<String, Controller> userControllerMap = new HashMap<>();
 
+
     public UserFrontController() {
-        userControllerMap.put("/test", new MemberFormController());
+        //요청 url , 만든 컨트롤러 추가
+        userControllerMap.put("/user/test", new UserController());
             }
 
     @Override
@@ -27,6 +29,7 @@ public class UserFrontController extends HttpServlet {
 
         Controller controller = userControllerMap.get(requestURI);
         if (controller == null) {
+            System.out.println("requestURI = " + requestURI);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }

@@ -1,4 +1,4 @@
-package com.example.backend.frontcontroller;
+package com.example.backend.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
