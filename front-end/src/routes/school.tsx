@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import '../css/school.css';
 
 export const School = () => {
@@ -44,7 +45,9 @@ export const School = () => {
         <div className="cover_school">
             {dummySchoolList.map((item) => (
                 <button className="btn-school learn-more">
-                    <span>{item.text}</span>
+                    <Link to="/" state={item.id}>
+                        {item.text}
+                    </Link>
                 </button>
             ))}
         </div>
