@@ -31,6 +31,7 @@ public class UserJoinController implements Controller {
         
         //insert 성공시 1 , 실패시 0
         int querySuccessCheck = userDao.join(user);
+
         ObjectMapper mapper = new ObjectMapper();
         String userJson = mapper.writeValueAsString(user);
         
