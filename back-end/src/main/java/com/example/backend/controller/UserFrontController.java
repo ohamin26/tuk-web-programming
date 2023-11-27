@@ -2,7 +2,9 @@ package com.example.backend.controller;
 
 
 
-import com.example.backend.controller.usercontroller.UserController;
+import com.example.backend.controller.usercontroller.UserDeleteController;
+import com.example.backend.controller.usercontroller.UserJoinController;
+import com.example.backend.controller.usercontroller.UserLoginController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +22,9 @@ public class UserFrontController extends HttpServlet {
 
     public UserFrontController() {
         //요청 url , 만든 컨트롤러 추가
-        userControllerMap.put("/user/test", new UserController());
+        userControllerMap.put("/user/join", new UserJoinController());
+        userControllerMap.put("/user/login", new UserLoginController());
+        userControllerMap.put("/user/delete", new UserDeleteController());
             }
 
     @Override
@@ -33,6 +37,7 @@ public class UserFrontController extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+
         controller.process(request,response);
     }
 }
