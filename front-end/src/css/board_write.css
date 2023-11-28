@@ -1,0 +1,52 @@
+.card_write {
+    padding: 20px;
+}
+
+.card-write input,
+textarea {
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px #e6e6e6;
+}
+
+.card-write .title input[type='text'] {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 85.5%;
+}
+
+.card-write .msg textarea {
+    min-width: 85.5%;
+    max-width: 85.5%;
+    min-height: 200px;
+    max-height: 200px;
+    box-shadow: inset 3px 3px 10px #e6e6e6;
+
+    vertical-align: top;
+}
+
+.card-write input[type='file'] {
+    border: none;
+    box-shadow: none;
+    padding: 10px;
+}
+
+.btn-w {
+    background-color: black;
+    padding: 10px;
+    color: #fff;
+    border-radius: 10px;
+    border-style: none;
+    align-items: end;
+}
+
+.btn-w:hover {
+    cursor: pointer;
+    transform: translate(0, 0.25em);
+    &::before {
+        box-shadow: 0 0 0 2px --pink-border, 0 0.5em 0 0 --pink-shadow;
+        transform: translate3d(0, 0.5em, -1em);
+    }
+}

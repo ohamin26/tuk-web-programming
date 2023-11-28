@@ -8,6 +8,10 @@ import { Board } from './routes/board';
 import { BoardDetail } from './routes/board_detail';
 import { Login } from './routes/login';
 import { TokenProvider } from './context/TokenContext';
+import { BoardWrite } from './routes/board_write';
+import { Join } from './routes/join';
+import { BookList } from './routes/book_list';
+import { BookRegister } from './routes/book_register';
 export const App = () => {
     return (
         <TokenProvider>
@@ -37,6 +41,24 @@ export const App = () => {
                     </Routes>
                     <Routes>
                         <Route path="/login" element={<Login />}></Route>
+                    </Routes>
+                    <Routes>
+                        <Route
+                            path="/board_write"
+                            element={<BoardWrite />}
+                        ></Route>
+                    </Routes>
+                    <Routes>
+                        <Route path="/join" element={<Join />}></Route>
+                    </Routes>
+                    <Routes>
+                        <Route path="/book_list" element={<BookList />}></Route>
+                    </Routes>
+                    <Routes>
+                        <Route
+                            path="/book_register"
+                            element={<BookRegister />}
+                        ></Route>
                     </Routes>
                 </Router>
             </div>

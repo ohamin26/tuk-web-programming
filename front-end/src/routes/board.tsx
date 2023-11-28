@@ -1,7 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/board.css';
 
 export const Board = () => {
+    const navigate = useNavigate();
+    const onClick = () => {
+        navigate('/board_write');
+    };
     const dummyList = [
         {
             id: 1,
@@ -74,6 +78,7 @@ export const Board = () => {
                     ))}
                 </tbody>
             </table>
+            <button onClick={onClick}>글쓰기</button>
         </div>
     );
 };

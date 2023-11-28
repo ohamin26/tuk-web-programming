@@ -1,0 +1,58 @@
+.board_container {
+    text-align: center;
+    padding: 30px;
+}
+
+.board_container .title {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.board_container .myinfo {
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    margin: auto;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.board_container .myinfo dl {
+    display: inline-block;
+}
+
+.board_container .myinfo dl,
+dt,
+dd {
+    display: inline-block;
+    font-size: small;
+}
+
+.board_container .myinfo dl dt {
+    margin-left: 5px;
+    color: #999;
+}
+
+.board_container .myinfo dl dd {
+    margin-right: 10px;
+    margin-left: 5px;
+}
+
+.cont {
+    margin-top: 30px;
+    padding-bottom: 30px;
+}
+
+.btn-like {
+    align-items: center;
+}
+.board_comment {
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    margin: auto;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    text-align: left;
+}

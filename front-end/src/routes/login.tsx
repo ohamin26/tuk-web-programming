@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToken } from '../context/TokenContext';
-
+import '../css/login.css';
+import { useNavigate } from 'react-router-dom';
 export const Login = () => {
     const { setGlobalToken } = useToken();
     const {
@@ -9,6 +9,10 @@ export const Login = () => {
         handleSubmit,
         formState: { isSubmitting, isSubmitted, errors },
     } = useForm();
+    const navigate = useNavigate();
+    const onClick = () => {
+        navigate('/join');
+    };
 
     const fetchJwtToken = async (loginData: any) => {
         try {
@@ -54,52 +58,65 @@ export const Login = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="id">이메일</label>
-            <input
-                id="id"
-                type="text"
-                placeholder="아이디를 입력하세요"
-                aria-invalid={
-                    isSubmitted ? (errors.id ? 'true' : 'false') : undefined
-                }
-                {...register('id', {
-                    required: '아이디는 필수 입력입니다.',
-                })}
-            />
-            {errors.id?.message && (
-                <small role="alert">
-                    {typeof errors.id?.message === 'string' ? (
-                        <span>{errors.id?.message}</span>
-                    ) : null}
-                </small>
-            )}
-            <label htmlFor="password">비밀번호</label>
-            <input
-                id="password"
-                type="password"
-                placeholder="***********"
-                aria-invalid={
-                    isSubmitted
-                        ? errors.password
-                            ? 'true'
-                            : 'false'
-                        : undefined
-                }
-                {...register('password', {
-                    required: '비밀번호는 필수 입력입니다.',
-                })}
-            />
-            {errors.password && (
-                <small role="alert">
-                    {typeof errors.password.message === 'string' ? (
-                        <span>{errors.password.message}</span>
-                    ) : null}
-                </small>
-            )}
-            <button type="submit" disabled={isSubmitting}>
-                로그인
-            </button>
-        </form>
+        <div className="cover">
+            <div className="login-wrapper">
+                <h2>Login</h2>
+                <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+                    <label htmlFor="id">이메일</label>
+                    <input
+                        id="id"
+                        type="text"
+                        placeholder="아이디를 입력하세요"
+                        aria-invalid={
+                            isSubmitted
+                                ? errors.id
+                                    ? 'true'
+                                    : 'false'
+                                : undefined
+                        }
+                        {...register('id', {
+                            required: '아이디는 필수 입력입니다.',
+                        })}
+                    />
+                    {errors.id?.message && (
+                        <small role="alert">
+                            {typeof errors.id?.message === 'string' ? (
+                                <span>{errors.id?.message}</span>
+                            ) : null}
+                        </small>
+                    )}
+                    <label htmlFor="password">비밀번호</label>
+                    <input
+                        id="password"
+                        type="password"
+                        placeholder="***********"
+                        aria-invalid={
+                            isSubmitted
+                                ? errors.password
+                                    ? 'true'
+                                    : 'false'
+                                : undefined
+                        }
+                        {...register('password', {
+                            required: '비밀번호는 필수 입력입니다.',
+                        })}
+                    />
+                    {errors.password && (
+                        <small role="alert">
+                            {typeof errors.password.message === 'string' ? (
+                                <span>{errors.password.message}</span>
+                            ) : null}
+                        </small>
+                    )}
+                    <button type="submit" disabled={isSubmitting}>
+                        로그인
+                    </button>
+
+                    <button onClick={onClick} disabled={isSubmitting}>
+                        회원가입
+                    </button>
+                </form>
+            </div>
+        </div>
     );
 };
