@@ -2,29 +2,26 @@ package com.example.backend.controller.usercontroller;
 
 import com.example.backend.controller.Controller;
 import com.example.backend.dao.UserDao;
-import com.example.backend.json.JsonParsing;
-
+import com.example.backend.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
-import java.util.Map;
 
-public class UserDeleteController implements Controller {
+public class UserInfoController implements Controller {
     UserDao userDao = new UserDao();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 응답 헤더 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        Map<String, String> jsonMap = JsonParsing.parsing(request);
+        User user = userDao.findByID(Integer.parseInt(request.getParameter("id")));
 
-        String inputId= jsonMap.get("id");
-        int querySuccessCheck = userDao.deleteById(Integer.parseInt(inputId));
-
-        response.getWriter().write("{\"querySuccessCheck\" : \"" + querySuccessCheck + "\"}");
+        //Json 생성 라이브러리 사용
+        ObjectMapper mapper = new ObjectMapper();
+        String userJson = mapper.writeValueAsString(user);
+        response.getWriter().write(userJson);
     }
 }

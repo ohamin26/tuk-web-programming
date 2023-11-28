@@ -2,7 +2,9 @@ package com.example.backend.controller.usercontroller;
 
 import com.example.backend.controller.Controller;
 import com.example.backend.dao.UserDao;
+import com.example.backend.json.JsonParsing;
 import com.example.backend.model.User;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 public class UserLoginController implements Controller {
     User user = new User();
@@ -23,23 +26,28 @@ public class UserLoginController implements Controller {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        //
-        String inputId = request.getParameter("id");
-        String inputPassword = request.getParameter("password");
+        //http body의 json 파싱후 map 변환.
+        Map<String, String> jsonMap = JsonParsing.parsing(request);
 
-        String password = userDao.findPasswordByUserId(inputId);
-        if (password == null) return;
+        String inputPassword = jsonMap.get("password");
+        String inputUserId= jsonMap.get("userId");
+
+        //입력 아이디로 비밀번호 가져오기
+        String password = userDao.findPasswordByUserId(inputUserId);
+
+        //아이디가 없는경우 null 리턴
+        if (password == null)
+            response.getWriter().write("{\"jwt\" : \"" + "notMatchingUserId\"}");
+
+        //비밀번호 비교
         if (password.equals(inputPassword)) {
             //로그인 성공 jwt session
-
             String jwt = Jwts.builder()
-                    .setSubject(inputId)
+                    .setSubject(inputUserId)
                     .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //만료일자
                     .signWith(SignatureAlgorithm.HS256, SECRET_KEY) //해시 알고리즘
                     .compact();
             response.getWriter().write("{\"jwt\" : \"" + jwt + "\"}");
         }
-
-
     }
 }

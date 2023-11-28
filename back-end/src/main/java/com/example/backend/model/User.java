@@ -5,7 +5,7 @@ public class User {
     private String userId;
     private String password;
     private String name;
-    private String phoneNum;
+    private String phoneNumber;
     private String nickname;
     private Integer school_id;
     private Integer major_id;
@@ -43,12 +43,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getNickname() {
