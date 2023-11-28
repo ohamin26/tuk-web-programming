@@ -1,0 +1,22 @@
+.cover_board {
+    margin-top: 10px;
+}
+.cover_board .board {
+    width: 70%;
+    margin: 0 auto;
+}
+.board span {
+    text-align: center;
+}
+.board a {
+    text-decoration: none;
+    color: #0b0b0b;
+}
+.cover_board button {
+    color: #fff;
+    font-size: 16px;
+    background-color: black;
+    margin-top: 20px;
+    border-radius: 10px;
+    width: 15%; /* 버튼이 부모의 100% 폭을 차지하도록 설정 */
+}

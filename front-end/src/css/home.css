@@ -1,11 +1,8 @@
-* {
-    text-align: left;
-}
-
 .cover {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    text-align: left;
 }
 
 .card {
@@ -42,7 +39,7 @@
     padding: 0;
 }
 
-.text {
+.text-h {
     font-size: 14px;
     line-height: 18px;
     color: #666;

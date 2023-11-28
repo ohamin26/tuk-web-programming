@@ -23,27 +23,27 @@ export const Header = () => {
                 </Link>
                 <ul>
                     <li>
-                        <Link to="게시판">
+                        <Link to="/board">
                             <span>자유게시판</span>
                         </Link>
                     </li>
                     <li>
-                        <Link to="/School">
+                        <Link to="/school">
                             <span>학교목록</span>
                         </Link>
                     </li>
                     <li>
-                        <Link to="판매중인 책">
+                        <Link to="/book_list">
                             <span>판매중인책</span>
                         </Link>
                     </li>
                     <li>
-                        <Link to="책 등록하기">
+                        <Link to="book_register">
                             <span>책등록하기</span>
                         </Link>
                     </li>
                 </ul>
-                <Link to="로그인">
+                <Link to="/Login">
                     <span>로그인</span>
                 </Link>
             </div>

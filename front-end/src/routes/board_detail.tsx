@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import '../css/board_detail.css';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { CiStar } from 'react-icons/ci';
+import { FaStar } from 'react-icons/fa';
+import { useRef, useState } from 'react';
 
-export const SearchResault = () => {
-    const location = useLocation();
-
+export const BoardDetail = () => {
     const dummyList = [
         {
             id: 1,
@@ -57,7 +58,7 @@ export const SearchResault = () => {
     const onSubmit = async (data: any) => {
         try {
             const response = await fetch(
-                'http://localhost:8080//book/comment/register',
+                'http://localhost:8080//board/comment/register',
                 {
                     method: 'POST',
                     headers: {
