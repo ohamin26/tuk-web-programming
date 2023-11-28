@@ -35,7 +35,7 @@ public class UserDao {
                 user.setId(rs.getInt("id"));
                 user.setUserId(rs.getString("user_id"));
                 user.setName(rs.getString("name"));
-                user.setPhoneNum(rs.getString("phoneNumber"));
+                user.setPhoneNumber(rs.getString("phoneNumber"));
                 user.setNickname(rs.getString("nickName"));
                 user.setCreateDate(rs.getString("create_date"));
             }
@@ -55,7 +55,7 @@ public class UserDao {
             pstmt.setString(1, user.getUserId());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getPhoneNum());
+            pstmt.setString(4, user.getPhoneNumber());
             pstmt.setString(5, user.getNickname());
             pstmt.setInt(6,user.getSchool_id());
             pstmt.setInt(7,user.getMajor_id());
@@ -82,13 +82,15 @@ public class UserDao {
         }
         return password;
     }
-    public int deleteById(String userId) {
+    public int deleteById(int id) {
         open();
-        String sql = "delete from `USER` where user_id = ?";
+        String sql = "delete from `USER` where id = ?";
         int querySuccessCheck =0;
+        System.out.println(id);
+
         try {
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,userId);
+            pstmt.setInt(1,id);
             querySuccessCheck = pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
