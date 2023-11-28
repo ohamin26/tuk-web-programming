@@ -1,5 +1,6 @@
 import image from '../pic_test.png';
 import '../css/home.css';
+import { useLocation } from 'react-router-dom';
 
 export const Home = () => {
     const dummyList = [
@@ -34,9 +35,11 @@ export const Home = () => {
             image: image,
         },
     ];
-
+    const location = useLocation();
     return (
         <div>
+            {location.state}
+
             <div className="cover">
                 {dummyList.map((item) => (
                     <div className="card">

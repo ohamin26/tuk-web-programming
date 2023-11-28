@@ -23,7 +23,7 @@ export const Header = () => {
                 </Link>
                 <ul>
                     <li>
-                        <Link to="게시판">
+                        <Link to="/Board">
                             <span>자유게시판</span>
                         </Link>
                     </li>
@@ -43,7 +43,7 @@ export const Header = () => {
                         </Link>
                     </li>
                 </ul>
-                <Link to="로그인">
+                <Link to="/Login">
                     <span>로그인</span>
                 </Link>
             </div>

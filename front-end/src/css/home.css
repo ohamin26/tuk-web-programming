@@ -1,11 +1,8 @@
-* {
-    text-align: left;
-}
-
 .cover {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    text-align: left;
 }
 
 .card {
