@@ -80,3 +80,7 @@ body {
         }
     }
 }
+
+.logout {
+    cursor: pointer;
+}

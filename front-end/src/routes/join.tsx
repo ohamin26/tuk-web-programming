@@ -1,16 +1,36 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 export const Join = () => {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
         formState: { isSubmitting, isSubmitted, errors },
     } = useForm();
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (loginData: any) => {
         try {
+            const response = await fetch('http://localhost:8080/user/join', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginData),
+            });
+
+            console.log(JSON.stringify(loginData));
+            console.log('응답 상태 코드:', response.status);
+            if (!response.ok) {
+                throw new Error('응답 오류');
+            }
+
+            const data = await response.json();
+            console.log('서버에서 받은 json', data);
+
             alert('회원가입 성공!');
+            navigate('/login');
         } catch (error: any) {
-            console.log(data);
+            console.log(loginData);
             alert('회원가입 실패');
         }
     };
@@ -20,26 +40,26 @@ export const Join = () => {
             <div className="login-wrapper">
                 <h2>회원가입</h2>
                 <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-                    <label htmlFor="id">아이디</label>
+                    <label htmlFor="userId">아이디</label>
                     <input
-                        id="id"
+                        id="userId"
                         type="text"
                         placeholder="아이디를 입력하세요"
                         aria-invalid={
                             isSubmitted
-                                ? errors.id
+                                ? errors.userId
                                     ? 'true'
                                     : 'false'
                                 : undefined
                         }
-                        {...register('id', {
+                        {...register('userId', {
                             required: '필수 항목입니다.',
                         })}
                     />
-                    {errors.id?.message && (
+                    {errors.userId?.message && (
                         <small role="alert">
-                            {typeof errors.id?.message === 'string' ? (
-                                <span>{errors.id?.message}</span>
+                            {typeof errors.userId?.message === 'string' ? (
+                                <span>{errors.userId?.message}</span>
                             ) : null}
                         </small>
                     )}
@@ -158,11 +178,11 @@ export const Join = () => {
                             ) : null}
                         </small>
                     )}
-                    <label htmlFor="major_id">학과</label>
+                    <label htmlFor="major_id">학년</label>
                     <input
                         id="major_id"
-                        type="text"
-                        placeholder="00학과"
+                        type="number"
+                        placeholder="숫자만입력하세요"
                         aria-invalid={
                             isSubmitted
                                 ? errors.major_id

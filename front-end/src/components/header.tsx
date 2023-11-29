@@ -15,6 +15,24 @@ export const Header = () => {
             setContent(nowContent.current.value);
         }
     };
+
+    const handleLogout = () => {
+        // 로그아웃 시 세션 스토리지에서 토큰을 삭제하고 로그인 상태를 false로 설정
+        sessionStorage.removeItem('token');
+        setLogin(false);
+
+        // 로그아웃 후 원하는 페이지로 이동 (예: 홈페이지로)
+        navigate('/');
+    };
+
+    const [login, setLogin] = useState(false);
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 세션 스토리지에서 토큰을 불러옵니다.
+        const storedToken = sessionStorage.getItem('token');
+        if (storedToken) {
+            setLogin(!login);
+        }
+    }, []);
     return (
         <div className="header">
             <div className="header-1">
@@ -43,9 +61,20 @@ export const Header = () => {
                         </Link>
                     </li>
                 </ul>
-                <Link to="/Login">
-                    <span>로그인</span>
-                </Link>
+                {!login ? (
+                    <Link to="/login">
+                        <span>로그인</span>
+                    </Link>
+                ) : (
+                    <div>
+                        <Link to="/my_page">
+                            <span>회원</span>
+                        </Link>
+                        <div className="logout" onClick={handleLogout}>
+                            로그아웃
+                        </div>
+                    </div>
+                )}
             </div>
             <div className="header-2">
                 <input

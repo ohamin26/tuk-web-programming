@@ -2,6 +2,7 @@ import image from '../pic_test.png';
 import '../css/home.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useToken } from '../context/TokenContext';
 
 export const Home = () => {
     const dummyList = [
@@ -48,13 +49,14 @@ export const Home = () => {
     ].slice(0, 6);
     const location = useLocation();
     const navigate = useNavigate();
+    const { token } = useToken();
     const onClick = (item: string | number) => {
         navigate(`/search-result?query=` + item, { state: { item } });
     };
+    console.log(token);
     return (
         <div>
             {location.state}
-
             <div className="cover">
                 {dummyList.map((item) => (
                     <div className="card">
