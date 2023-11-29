@@ -23,11 +23,10 @@ public class JsonParsing {
         }
 
         String jsonData = sb.toString();
-
+        System.out.println("jsonData = " + jsonData);
         // Jackson ObjectMapper를 사용하여 JSON 데이터 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            objectMapper.readValue(jsonData, User.class);
             jsonMap = objectMapper.readValue(jsonData, new TypeReference<Map<String, String>>() {
             });
         } catch (Exception e) {

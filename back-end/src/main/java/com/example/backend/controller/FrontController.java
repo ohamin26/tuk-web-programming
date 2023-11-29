@@ -8,7 +8,7 @@ import com.example.backend.controller.usercontroller.UserInfoController;
 import com.example.backend.controller.usercontroller.UserJoinController;
 import com.example.backend.controller.usercontroller.UserLoginController;
 
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name = "FrontControllerServlet",urlPatterns = "/*")
-public class FrontController extends HttpServlet {
+public class FrontController extends HttpServlet  {
     private Map<String, Controller> ControllerMap = new HashMap<>();
 
     public FrontController() {
@@ -32,10 +32,15 @@ public class FrontController extends HttpServlet {
         //school
         ControllerMap.put("/school", new SchoolInfoController());
     }
-
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
+
+        //사전 요청 처리
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
 
         Controller controller = ControllerMap.get(requestURI);
         if (controller == null) {
