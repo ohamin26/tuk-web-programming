@@ -17,12 +17,11 @@ export const Header = () => {
     };
 
     const handleLogout = () => {
-        // 로그아웃 시 세션 스토리지에서 토큰을 삭제하고 로그인 상태를 false로 설정
         sessionStorage.removeItem('token');
         setLogin(false);
 
-        // 로그아웃 후 원하는 페이지로 이동 (예: 홈페이지로)
         navigate('/');
+        window.location.reload();
     };
 
     const [login, setLogin] = useState(false);
@@ -30,13 +29,13 @@ export const Header = () => {
         // 컴포넌트가 마운트될 때 세션 스토리지에서 토큰을 불러옵니다.
         const storedToken = sessionStorage.getItem('token');
         if (storedToken) {
-            setLogin(!login);
+            setLogin(true);
         }
     }, []);
     return (
         <div className="header">
             <div className="header-1">
-                <Link to="/">
+                <Link to="/home">
                     <LuSchool size="40" />
                 </Link>
                 <ul>

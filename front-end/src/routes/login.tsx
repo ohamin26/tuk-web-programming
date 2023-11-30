@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useToken } from '../context/TokenContext';
 import '../css/login.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 export const Login = () => {
     const { setGlobalToken } = useToken();
@@ -49,13 +49,15 @@ export const Login = () => {
         try {
             // submit 버튼을 눌렀을 때 서버에 로그인 정보를 전송하고 JWT를 받아오기
             await fetchJwtToken(data);
-            navigate('/');
+            navigate('/home');
+            window.location.reload();
             alert('로그인 성공!');
         } catch (error: any) {
             console.log(data);
             alert('로그인 실패');
         }
     };
+
     return (
         <div className="cover">
             <div className="login-wrapper">

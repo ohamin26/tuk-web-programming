@@ -1,7 +1,7 @@
 import image from '../pic_test.png';
 import '../css/home.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToken } from '../context/TokenContext';
 
 export const Home = () => {
