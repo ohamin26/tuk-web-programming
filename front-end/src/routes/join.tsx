@@ -28,7 +28,7 @@ export const Join = () => {
             console.log('서버에서 받은 json', data);
 
             alert('회원가입 성공!');
-            navigate('/login');
+            navigate('/');
         } catch (error: any) {
             console.log(loginData);
             alert('회원가입 실패');
@@ -202,7 +202,7 @@ export const Join = () => {
                         </small>
                     )}
                     <button type="submit" disabled={isSubmitting}>
-                        로그인
+                        회원가입
                     </button>
                 </form>
             </div>

@@ -45,7 +45,7 @@ export const School = () => {
         <div className="cover_school">
             {dummySchoolList.map((item) => (
                 <button className="btn-school learn-more">
-                    <Link to="/" state={item.id}>
+                    <Link to="/home" state={item.id}>
                         {item.text}
                     </Link>
                 </button>
