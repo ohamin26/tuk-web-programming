@@ -45,7 +45,8 @@ public class UserLoginController implements Controller {
         if (password.equals(inputPassword)) {
             //로그인 성공 jwt session
             String jwt = Jwts.builder()
-                    .setSubject(String.valueOf(id))
+                    .claim("id",id).claim("userId",inputUserId)
+                    .setSubject(String.valueOf(inputUserId))
                     .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //만료일자
                     .signWith(SignatureAlgorithm.HS256, SECRET_KEY) //해시 알고리즘
                     .compact();
