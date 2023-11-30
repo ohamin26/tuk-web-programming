@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useToken } from '../context/TokenContext';
 import '../css/login.css';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 export const Login = () => {
     const { setGlobalToken } = useToken();
     const {
@@ -13,6 +14,7 @@ export const Login = () => {
     const onClick = () => {
         navigate('/join');
     };
+    const [login, setLogin] = useState(false);
 
     const fetchJwtToken = async (loginData: any) => {
         try {
@@ -22,7 +24,6 @@ export const Login = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(loginData),
-                credentials: 'include',
             });
 
             console.log(JSON.stringify(loginData));
@@ -30,12 +31,10 @@ export const Login = () => {
             if (!response.ok) {
                 throw new Error('아이디나 비밀번호가 틀렸습니다.');
             }
-            const text = await response.text();
-            console.log(text);
 
             const data = await response.json();
             console.log('서버에서 받은 json', data);
-            const receivedToken = data.token;
+            const receivedToken = data.jwt;
 
             setGlobalToken(receivedToken);
 
@@ -50,38 +49,38 @@ export const Login = () => {
         try {
             // submit 버튼을 눌렀을 때 서버에 로그인 정보를 전송하고 JWT를 받아오기
             await fetchJwtToken(data);
+            navigate('/');
             alert('로그인 성공!');
         } catch (error: any) {
             console.log(data);
             alert('로그인 실패');
         }
     };
-
     return (
         <div className="cover">
             <div className="login-wrapper">
                 <h2>Login</h2>
                 <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-                    <label htmlFor="id">이메일</label>
+                    <label htmlFor="userId">이메일</label>
                     <input
-                        id="id"
+                        id="userId"
                         type="text"
                         placeholder="아이디를 입력하세요"
                         aria-invalid={
                             isSubmitted
-                                ? errors.id
+                                ? errors.userId
                                     ? 'true'
                                     : 'false'
                                 : undefined
                         }
-                        {...register('id', {
+                        {...register('userId', {
                             required: '아이디는 필수 입력입니다.',
                         })}
                     />
-                    {errors.id?.message && (
+                    {errors.userId?.message && (
                         <small role="alert">
-                            {typeof errors.id?.message === 'string' ? (
-                                <span>{errors.id?.message}</span>
+                            {typeof errors.userId?.message === 'string' ? (
+                                <span>{errors.userId?.message}</span>
                             ) : null}
                         </small>
                     )}
