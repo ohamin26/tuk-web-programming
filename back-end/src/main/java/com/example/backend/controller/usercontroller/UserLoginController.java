@@ -32,8 +32,10 @@ public class UserLoginController implements Controller {
         String inputPassword = jsonMap.get("password");
         String inputUserId= jsonMap.get("userId");
 
-        //입력 아이디로 비밀번호 가져오기
-        String password = userDao.findPasswordByUserId(inputUserId);
+        //입력 아이디로 비밀번호,id 가져오기
+        User user = userDao.findPasswordByUserId(inputUserId);
+        String password = user.getPassword();
+        int id = user.getId();
 
         //아이디가 없는경우 null 리턴
         if (password == null)
@@ -43,7 +45,8 @@ public class UserLoginController implements Controller {
         if (password.equals(inputPassword)) {
             //로그인 성공 jwt session
             String jwt = Jwts.builder()
-                    .setSubject(inputUserId)
+                    .claim("id",id).claim("userId",inputUserId)
+                    .setSubject(String.valueOf(inputUserId))
                     .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //만료일자
                     .signWith(SignatureAlgorithm.HS256, SECRET_KEY) //해시 알고리즘
                     .compact();

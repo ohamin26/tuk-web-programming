@@ -66,21 +66,24 @@ public class UserDao {
         return querySuccessCheck;
     }
 
-    public String findPasswordByUserId(String userId) {
+    public User findPasswordByUserId(String userId) {
         open();
-        String sql = "select password from `USER` where user_Id = ?";
-        String password = null;
+        String sql = "select id, password from `USER` where user_Id = ?";
+        User user = new User();
+        int id;
         try {
             pstmt = conn.prepareStatement(sql);
              pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next())
-                password = rs.getString("password");
+            while (rs.next()){
+                user.setPassword(rs.getString("password"));
+                user.setId(rs.getInt("id"));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return password;
+        return user;
     }
     public int deleteById(int id) {
         open();
