@@ -11,12 +11,7 @@ public class BookBoard {
     private Integer book_status;
     private Boolean is_sale;
 
-    public Boolean getIs_sale() {
-        return is_sale;
-    }
-    public void setIs_sale(Boolean is_sale) {
-        this.is_sale = is_sale;
-    }
+
     public Integer getId() {
         return id;
     }
@@ -64,5 +59,12 @@ public class BookBoard {
     }
     public void setBook_status(Integer book_status) {
         this.book_status = book_status;
+    }
+
+    public Boolean getIs_sale() {
+        return is_sale;
+    }
+    public void setIs_sale(Boolean is_sale) {
+        this.is_sale = is_sale;
     }
 }

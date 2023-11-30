@@ -19,9 +19,10 @@ public class BookBoardDeleteController implements Controller {
         response.setCharacterEncoding("UTF-8");
 
         Map<String, String> jsonMap = JsonParsing.parsing(request);
-
-        String inputIsbn= jsonMap.get("isbn");
-        int querySuccessCheck = bookBoardDao.deleteById(Integer.parseInt(inputIsbn));
+        
+        //id로 삭제
+        String inputId= jsonMap.get("id");
+        int querySuccessCheck = bookBoardDao.deleteById(Integer.parseInt(inputId));
 
         response.getWriter().write("{\"querySuccessCheck\" : \"" + querySuccessCheck + "\"}");
     }

@@ -14,6 +14,7 @@ public class BookBoardInfoController implements Controller {
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
+        response.setContentType("application/file");
         response.setCharacterEncoding("UTF-8");
 
         BookBoard bookBoard = bookBoardDao.findById(Integer.parseInt(request.getParameter("id")));
@@ -21,5 +22,7 @@ public class BookBoardInfoController implements Controller {
         ObjectMapper mapper = new ObjectMapper();
         String bookBoardJson = mapper.writeValueAsString(bookBoard);
         response.getWriter().write(bookBoardJson);
+
+        //DB에 저장된 리스트 반환
     }
 }

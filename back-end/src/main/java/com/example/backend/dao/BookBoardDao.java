@@ -23,7 +23,7 @@ public class BookBoardDao {
         }
     }
 
-    //책등록글 정보
+    //책등록글 정보 (DB에서 정보 보여주기)
     public BookBoard findById(int id) {
         open();
         BookBoard bookboard = new BookBoard();
@@ -41,6 +41,7 @@ public class BookBoardDao {
                 bookboard.setPlace(rs.getString("place"));
                 bookboard.setContent(rs.getString("content"));
                 bookboard.setBook_status(rs.getInt("book_status"));
+                bookboard.setIs_sale(rs.getBoolean("is_sale"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,12 +50,12 @@ public class BookBoardDao {
         return bookboard;
     }
 
-    //책등록글 등록
+    //책등록글 등록 json data DB에 저장
     public int register(BookBoard bookboard) {
         open();
         int querySuccessCheck =0;
-        String sql = "insert into `BOOK_BOARD`(id, user_id, isbn, title, price, place, content, book_status) " +
-                "values(?,?,?,?,?,?,?,?)";
+        String sql = "insert into `BOOK_BOARD`(id, user_id, isbn, title, price, place, content, book_status, is_sale) " +
+                "values(?,?,?,?,?,?,?,?,?)";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, bookboard.getId());
@@ -65,6 +66,7 @@ public class BookBoardDao {
             pstmt.setString(6, bookboard.getPlace());
             pstmt.setString(7, bookboard.getContent());
             pstmt.setInt(8, bookboard.getBook_status());
+            pstmt.setBoolean(9,bookboard.getIs_sale());
             querySuccessCheck = pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +74,7 @@ public class BookBoardDao {
         return querySuccessCheck;
     }
 
-    //책등록글 삭제
+    //책등록글 삭제 (id값으로 삭제)
     public int deleteById(int id) {
         open();
         String sql = "delete from `BOOK_BOARD` where id = ?";
@@ -87,4 +89,6 @@ public class BookBoardDao {
         }
         return querySuccessCheck;
     }
+    // 책 이미지(form 데이터 삭제)
+
 }
