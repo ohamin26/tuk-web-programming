@@ -42,6 +42,7 @@ public class BookBoardDao {
                 bookboard.setContent(rs.getString("content"));
                 bookboard.setBook_status(rs.getInt("book_status"));
                 bookboard.setIs_sale(rs.getBoolean("is_sale"));
+                bookboard.setFilePath(rs.getString("file_path"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,8 +55,8 @@ public class BookBoardDao {
     public int register(BookBoard bookboard) {
         open();
         int querySuccessCheck =0;
-        String sql = "insert into `BOOK_BOARD`(id, user_id, isbn, title, price, place, content, book_status, is_sale) " +
-                "values(?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into `BOOK_BOARD`(id, user_id, isbn, title, price, place, content, book_status, is_sale, file_path) " +
+                "values(?,?,?,?,?,?,?,?,?,?)";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, bookboard.getId());
@@ -67,6 +68,7 @@ public class BookBoardDao {
             pstmt.setString(7, bookboard.getContent());
             pstmt.setInt(8, bookboard.getBook_status());
             pstmt.setBoolean(9,bookboard.getIs_sale());
+            pstmt.setString(10,bookboard.getFilePath());
             querySuccessCheck = pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,6 +91,5 @@ public class BookBoardDao {
         }
         return querySuccessCheck;
     }
-    // 책 이미지(form 데이터 삭제)
 
 }

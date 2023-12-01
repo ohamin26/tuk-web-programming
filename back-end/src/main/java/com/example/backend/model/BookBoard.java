@@ -10,6 +10,7 @@ public class BookBoard {
     private String content;
     private Integer book_status;
     private Boolean is_sale;
+    private String filePath;
 
 
     public Integer getId() {
@@ -67,4 +68,7 @@ public class BookBoard {
     public void setIs_sale(Boolean is_sale) {
         this.is_sale = is_sale;
     }
+
+    public String getFilePath() { return filePath; };
+    public void setFilePath(String filePath){ this.filePath = filePath; };
 }

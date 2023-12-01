@@ -42,9 +42,10 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/bookboard/register", new BookBoardRegisterController());
         ControllerMap.put("/bookboard/delete", new BookBoardDeleteController());
         ControllerMap.put("/bookboard", new BookBoardInfoController());
-
         //book
         ControllerMap.put("/book", new BookInfoController());
+
+
     }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
