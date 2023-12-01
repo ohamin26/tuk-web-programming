@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SchoolDao {
     Connection conn = null;
@@ -40,5 +42,26 @@ public class SchoolDao {
         }
 
         return school;
+    }
+
+    public List<School> findAll() {
+        open();
+        ArrayList<School> schoolList = new ArrayList<>();
+        String sql = "SELECT * FROM SCHOOL ";
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                School school = new School();
+                school.setId(rs.getInt("id"));
+                school.setName(rs.getString("name"));
+                school.setPhone(rs.getString("phone"));
+                schoolList.add(school);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return schoolList;
     }
 }

@@ -3,6 +3,7 @@ package com.example.backend.controller;
 
 
 import com.example.backend.controller.schoolcontroller.SchoolInfoController;
+import com.example.backend.controller.schoolcontroller.SchoolTotalController;
 import com.example.backend.controller.usercontroller.UserDeleteController;
 import com.example.backend.controller.usercontroller.UserInfoController;
 import com.example.backend.controller.usercontroller.UserJoinController;
@@ -31,6 +32,7 @@ public class FrontController extends HttpServlet  {
 
         //school
         ControllerMap.put("/school", new SchoolInfoController());
+        ControllerMap.put("/school/all", new SchoolTotalController());
     }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
