@@ -41,7 +41,7 @@ public class BookBoardRegisterController implements Controller {
         Part filePart = request.getPart("file");
         if (filePart != null){
             String filename = extractFileName(filePart);
-            String savePath = "/temp";
+            String savePath = "/back-end/src/main/webapp/image";
             
             File fileSaveDir = new File(savePath);
             if(!fileSaveDir.exists()){
