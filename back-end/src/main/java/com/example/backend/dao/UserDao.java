@@ -1,11 +1,15 @@
 package com.example.backend.dao;
 
+import com.example.backend.model.BookBoard;
+import com.example.backend.model.School;
 import com.example.backend.model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
     Connection conn = null;
@@ -89,7 +93,6 @@ public class UserDao {
         open();
         String sql = "delete from `USER` where id = ?";
         int querySuccessCheck =0;
-        System.out.println(id);
 
         try {
             pstmt = conn.prepareStatement(sql);
@@ -99,5 +102,35 @@ public class UserDao {
             e.printStackTrace();
         }
         return querySuccessCheck;
+    }
+
+    //회원이 작성한 글
+    public List<BookBoard> findBookBoardByUserId(int userId) {
+        ArrayList<BookBoard> bookBoards = new ArrayList<>();
+        open();
+        String sql = "select * from Book_Board where User_id = ?";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,userId);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                BookBoard bookBoard = new BookBoard();
+                bookBoard.setId(rs.getInt("id"));
+                bookBoard.setUser_id(rs.getString("user_id"));
+                bookBoard.setISBN(rs.getInt("isbn"));
+                bookBoard.setTitle(rs.getString("title"));
+                bookBoard.setPrice(rs.getInt("price"));
+                bookBoard.setPlace(rs.getString("place"));
+                bookBoard.setContent(rs.getString("content"));
+                bookBoard.setBook_status(rs.getInt("book_status"));
+                bookBoard.setIs_sale(rs.getBoolean("is_sale"));
+                bookBoard.setFilePath(rs.getString("file_path"));
+                bookBoards.add(bookBoard);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookBoards;
     }
 }

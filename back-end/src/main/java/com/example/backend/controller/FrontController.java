@@ -8,10 +8,7 @@ import com.example.backend.controller.bookboardcontroller.BookBoardRegisterContr
 import com.example.backend.controller.bookcontroller.BookInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolTotalController;
-import com.example.backend.controller.usercontroller.UserDeleteController;
-import com.example.backend.controller.usercontroller.UserInfoController;
-import com.example.backend.controller.usercontroller.UserJoinController;
-import com.example.backend.controller.usercontroller.UserLoginController;
+import com.example.backend.controller.usercontroller.*;
 
 
 import javax.servlet.*;
@@ -34,10 +31,11 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/user/login", new UserLoginController());
         ControllerMap.put("/user/delete", new UserDeleteController());
         ControllerMap.put("/user", new UserInfoController());
-
+        ControllerMap.put("/user/book", new UserWriteBookBoardController());
 
         //school
         ControllerMap.put("/school", new SchoolInfoController());
+        ControllerMap.put("/school/all", new SchoolTotalController());
 
         //bookboard
         ControllerMap.put("/bookboard/register", new BookBoardRegisterController());
@@ -47,7 +45,6 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/book", new BookInfoController());
 
 
-        ControllerMap.put("/school/all", new SchoolTotalController());
     }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
