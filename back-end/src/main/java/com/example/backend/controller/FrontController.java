@@ -2,12 +2,17 @@ package com.example.backend.controller;
 
 
 
+import com.example.backend.controller.bookboardcontroller.BookBoardDeleteController;
+import com.example.backend.controller.bookboardcontroller.BookBoardInfoController;
+import com.example.backend.controller.bookboardcontroller.BookBoardRegisterController;
+import com.example.backend.controller.bookcontroller.BookInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolTotalController;
 import com.example.backend.controller.usercontroller.UserDeleteController;
 import com.example.backend.controller.usercontroller.UserInfoController;
 import com.example.backend.controller.usercontroller.UserJoinController;
 import com.example.backend.controller.usercontroller.UserLoginController;
+
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -30,8 +35,18 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/user/delete", new UserDeleteController());
         ControllerMap.put("/user", new UserInfoController());
 
+
         //school
         ControllerMap.put("/school", new SchoolInfoController());
+
+        //bookboard
+        ControllerMap.put("/bookboard/register", new BookBoardRegisterController());
+        ControllerMap.put("/bookboard/delete", new BookBoardDeleteController());
+        ControllerMap.put("/bookboard", new BookBoardInfoController());
+        //book
+        ControllerMap.put("/book", new BookInfoController());
+
+
         ControllerMap.put("/school/all", new SchoolTotalController());
     }
     @Override
