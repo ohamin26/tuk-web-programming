@@ -14,7 +14,6 @@ export const Login = () => {
     const onClick = () => {
         navigate('/join');
     };
-    const [login, setLogin] = useState(false);
 
     const fetchJwtToken = async (loginData: any) => {
         try {
