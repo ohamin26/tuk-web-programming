@@ -10,7 +10,6 @@ interface UserInfo {
     name: string;
     phoneNumber: string;
     nickname: string;
-    school_id: number;
     major_id: number;
     createDate: string;
 }
@@ -80,11 +79,9 @@ export const MyPage = () => {
                         <label>닉네임:</label>
                         <span>{userInfo?.nickname}</span>
 
-                        <label>학번:</label>
-                        <span>{userInfo?.school_id}</span>
-
                         <label>학년:</label>
                         <span>{userInfo?.major_id}</span>
+
                         <label>전화번호:</label>
                         <span>{userInfo?.phoneNumber}</span>
 

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import image from '../pic_test.png';
 
 export const BookList = () => {
@@ -48,11 +49,16 @@ export const BookList = () => {
             image: image,
         },
     ];
+
+    const navigate = useNavigate();
+    const onClick = (item: string | number) => {
+        navigate(`/search-result?query=` + item, { state: { item } });
+    };
     return (
         <div className="cover">
             {dummyList.map((item) => (
                 <div className="card">
-                    <img src={image} alt="" />
+                    <img src={image} alt="" onClick={() => onClick(item.id)} />
                     <span className="heading">글 제목 : {item.id}</span>
                     <div className="data">
                         <span>가격 : {item.text}</span>
