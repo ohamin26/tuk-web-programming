@@ -2,6 +2,14 @@ package com.example.backend.controller;
 
 
 
+import com.example.backend.controller.boardcontroller.BoardCreateController;
+import com.example.backend.controller.boardcontroller.BoardDeleteController;
+import com.example.backend.controller.boardcontroller.BoardInfoController;
+import com.example.backend.controller.boardcontroller.BoardUpdateController;
+import com.example.backend.controller.commentcontroller.CommentDeleteController;
+import com.example.backend.controller.commentcontroller.CommentInfoController;
+import com.example.backend.controller.commentcontroller.CommentRegisterController;
+import com.example.backend.controller.commentcontroller.CommentUpdateController;
 import com.example.backend.controller.schoolcontroller.SchoolInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolTotalController;
 import com.example.backend.controller.usercontroller.UserDeleteController;
@@ -33,6 +41,19 @@ public class FrontController extends HttpServlet  {
         //school
         ControllerMap.put("/school", new SchoolInfoController());
         ControllerMap.put("/school/all", new SchoolTotalController());
+
+        //board
+        ControllerMap.put("/board/create", new BoardCreateController());
+        ControllerMap.put("/board/update", new BoardUpdateController());
+        ControllerMap.put("/board/delete", new BoardDeleteController());
+        ControllerMap.put("/board", new BoardInfoController());
+
+        // comment(댓글)
+
+        ControllerMap.put("/board/comment/register", new CommentRegisterController());
+        ControllerMap.put("/board/comment/update", new CommentUpdateController());
+        ControllerMap.put("/board/comment/delete", new CommentDeleteController());
+        ControllerMap.put("/comment", new CommentInfoController());
     }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
