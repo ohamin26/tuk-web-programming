@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
 export const SearchResault = () => {
-    const location = useLocation();
-
     const dummyList = [
         {
             id: 1,

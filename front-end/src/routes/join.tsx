@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 export const Join = () => {
     const navigate = useNavigate();
+    const schoolOptions = [
+        '한국공학대학교',
+        '경기과학기술대학교',
+        '인천대학교',
+        // Add more schools as needed
+    ];
     const {
         register,
         handleSubmit,
@@ -10,6 +16,12 @@ export const Join = () => {
     } = useForm();
     const onSubmit = async (loginData: any) => {
         try {
+            const selectedSchoolIndex = schoolOptions.findIndex(
+                (school) => school === loginData.school_id
+            );
+            const school_id = String(selectedSchoolIndex + 1);
+            loginData.school_id = school_id;
+
             const response = await fetch('http://localhost:8080/user/join', {
                 method: 'POST',
                 headers: {
@@ -17,7 +29,6 @@ export const Join = () => {
                 },
                 body: JSON.stringify(loginData),
             });
-
             console.log(JSON.stringify(loginData));
             console.log('응답 상태 코드:', response.status);
             if (!response.ok) {
@@ -155,11 +166,9 @@ export const Join = () => {
                             ) : null}
                         </small>
                     )}
-                    <label htmlFor="school_id">학번</label>
-                    <input
+                    <label htmlFor="school_id">학교</label>
+                    <select
                         id="school_id"
-                        type="number"
-                        placeholder="-없이 입력해주세요"
                         aria-invalid={
                             isSubmitted
                                 ? errors.school_id
@@ -170,7 +179,23 @@ export const Join = () => {
                         {...register('school_id', {
                             required: '필수 항목입니다.',
                         })}
-                    />
+                    >
+                        <option value="" disabled>
+                            선택하세요
+                        </option>
+                        {schoolOptions.map((school, index) => (
+                            <option key={index} value={school}>
+                                {school}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.school_id && (
+                        <small role="alert">
+                            {typeof errors.school_id.message === 'string' ? (
+                                <span>{errors.school_id.message}</span>
+                            ) : null}
+                        </small>
+                    )}
                     {errors.school_id && (
                         <small role="alert">
                             {typeof errors.school_id.message === 'string' ? (
