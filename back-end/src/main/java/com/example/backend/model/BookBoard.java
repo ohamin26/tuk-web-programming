@@ -11,6 +11,7 @@ public class BookBoard {
     private Integer book_status;
     private Boolean is_sale;
     private String filePath;
+    private int view_count;
 
 
     public Integer getId() {
@@ -71,4 +72,11 @@ public class BookBoard {
 
     public String getFilePath() { return filePath; };
     public void setFilePath(String filePath){ this.filePath = filePath; };
+    public int getView_count() {
+        return view_count;
+    }
+
+    public void setView_count(int view_count) {
+        this.view_count = view_count;
+    }
 }
