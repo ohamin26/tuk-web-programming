@@ -29,46 +29,44 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "FrontControllerServlet",urlPatterns = "/*")
+@WebServlet(name = "FrontControllerServlet",urlPatterns = "/api/*")
 public class FrontController extends HttpServlet  {
     private Map<String, Controller> ControllerMap = new HashMap<>();
 
     public FrontController() {
         //요청 url , 만든 컨트롤러 추가
         //user
-        ControllerMap.put("/user/join", new UserJoinController());
-        ControllerMap.put("/user/login", new UserLoginController());
-        ControllerMap.put("/user/delete", new UserDeleteController());
-        ControllerMap.put("/user", new UserInfoController());
-        ControllerMap.put("/user/book", new UserWriteBookBoardController());
+        ControllerMap.put("/api/user/join", new UserJoinController());
+        ControllerMap.put("/api/user/login", new UserLoginController());
+        ControllerMap.put("/api/user/delete", new UserDeleteController());
+        ControllerMap.put("/api/user", new UserInfoController());
+        ControllerMap.put("/api/user/book", new UserWriteBookBoardController());
 
         //school
-        ControllerMap.put("/school", new SchoolInfoController());
-        ControllerMap.put("/school/all", new SchoolTotalController());
+        ControllerMap.put("/api/school", new SchoolInfoController());
+        ControllerMap.put("/api/school/all", new SchoolTotalController());
 
         //bookboard
-        ControllerMap.put("/bookboard/register", new BookBoardRegisterController());
-        ControllerMap.put("/bookboard/delete", new BookBoardDeleteController());
-        ControllerMap.put("/bookboard", new BookBoardInfoController());
-        ControllerMap.put("/bookboard/all", new BookBoardTotalController());
+        ControllerMap.put("/api/bookboard/register", new BookBoardRegisterController());
+        ControllerMap.put("/api/bookboard/delete", new BookBoardDeleteController());
+        ControllerMap.put("/api/bookboard", new BookBoardInfoController());
+        ControllerMap.put("/api/bookboard/all", new BookBoardTotalController());
+
         //book
-        ControllerMap.put("/book", new BookInfoController());
-
-
-        ControllerMap.put("/school/all", new SchoolTotalController());
+        ControllerMap.put("/api/book", new BookInfoController());
 
         //board
-        ControllerMap.put("/board/create", new BoardCreateController());
-        ControllerMap.put("/board/update", new BoardUpdateController());
-        ControllerMap.put("/board/delete", new BoardDeleteController());
-        ControllerMap.put("/board", new BoardInfoController());
+        ControllerMap.put("/api/board/create", new BoardCreateController());
+        ControllerMap.put("/api/board/update", new BoardUpdateController());
+        ControllerMap.put("/api/board/delete", new BoardDeleteController());
+        ControllerMap.put("/api/board", new BoardInfoController());
 
         // comment(댓글)
 
-        ControllerMap.put("/board/comment/register", new CommentRegisterController());
-        ControllerMap.put("/board/comment/update", new CommentUpdateController());
-        ControllerMap.put("/board/comment/delete", new CommentDeleteController());
-        ControllerMap.put("/comment", new CommentInfoController());
+        ControllerMap.put("/api/board/comment/register", new CommentRegisterController());
+        ControllerMap.put("/api/board/comment/update", new CommentUpdateController());
+        ControllerMap.put("/api/board/comment/delete", new CommentDeleteController());
+        ControllerMap.put("/api/comment", new CommentInfoController());
     }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
