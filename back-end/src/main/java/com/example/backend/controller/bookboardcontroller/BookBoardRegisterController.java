@@ -34,8 +34,8 @@ public class BookBoardRegisterController implements Controller {
             Part filePart = request.getPart("image");
             if (filePart != null) {
                 String filename = extractFileName(filePart);
-                String savePath = request.getServletContext().getRealPath("/WEB-INF/image");
-
+                String savePath = request.getServletContext().getRealPath("/WEB-INF/static/image/");
+                String imageUrl = request.getContextPath() + "static/image/" + filename;
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
@@ -45,7 +45,7 @@ public class BookBoardRegisterController implements Controller {
                 filePart.write(savePath + File.separator + filename);
 
                 //파일 경로를 BookBoard 객체에 저장
-                bookboard.setFilePath(savePath + File.separator + filename);
+                bookboard.setFilePath(imageUrl);
             }
             // 여기서 파일을 저장하고 파일의 URL을 얻을 수 있습니다.
             // 이 부분은 실제로 파일을 저장하고 데이터베이스에 파일의 URL을 저장하는 로직으로 변경해야 합니다.
