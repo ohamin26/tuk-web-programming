@@ -12,6 +12,7 @@ import com.example.backend.controller.commentcontroller.CommentUpdateController;
 import com.example.backend.controller.bookboardcontroller.BookBoardDeleteController;
 import com.example.backend.controller.bookboardcontroller.BookBoardInfoController;
 import com.example.backend.controller.bookboardcontroller.BookBoardRegisterController;
+import com.example.backend.controller.bookboardcontroller.BookBoardTotalController;
 import com.example.backend.controller.bookcontroller.BookInfoController;
 
 import com.example.backend.controller.schoolcontroller.SchoolInfoController;
@@ -49,6 +50,7 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/bookboard/register", new BookBoardRegisterController());
         ControllerMap.put("/bookboard/delete", new BookBoardDeleteController());
         ControllerMap.put("/bookboard", new BookBoardInfoController());
+        ControllerMap.put("/bookboard/all", new BookBoardTotalController());
         //book
         ControllerMap.put("/book", new BookInfoController());
 
