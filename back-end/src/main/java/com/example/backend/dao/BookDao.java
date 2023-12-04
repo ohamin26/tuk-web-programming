@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookDao {
     Connection conn = null;
@@ -27,12 +29,13 @@ public class BookDao {
     public Book findByName(String name) {
         open();
         Book book = new Book();
-        String sql = "SELECT * FROM BOOK WHERE name = ?";
+        String sql = "SELECT * FROM BOOK WHERE NAME = ?";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,name);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
+                book.setIsbn(rs.getInt("isbn"));
                 book.setName(rs.getString("name"));
                 book.setContent(rs.getString("content"));
                 book.setPrice(rs.getInt("price"));
@@ -44,6 +47,30 @@ public class BookDao {
         }
 
         return book;
+    }
+
+    public List<Book> findAll() {
+        open();
+        ArrayList<Book> bookList = new ArrayList<>();
+        String sql = "SELECT * FROM BOOK ";
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Book book = new Book();
+                book.setIsbn(rs.getInt("isbn"));
+                book.setName(rs.getString("name"));
+                book.setContent(rs.getString("content"));
+                book.setPrice(rs.getInt("price"));
+                book.setAuthor(rs.getString("author"));
+                book.setPublisher(rs.getString("publisher"));
+                bookList.add(book);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookList;
     }
 
 }

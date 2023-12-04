@@ -1,12 +1,21 @@
 package com.example.backend.model;
 
 public class Book {
+
+    private int isbn;
     private String name;
     private String content;
     private int price;
     private String author;
     private String publisher;
 
+    public int getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(int isbn) {
+        this.isbn = isbn;
+    }
     public String getName() {
         return name;
     }
