@@ -1,14 +1,12 @@
 package com.example.backend.controller;
 
-import com.example.backend.controller.boardcontroller.BoardCreateController;
-import com.example.backend.controller.boardcontroller.BoardDeleteController;
-import com.example.backend.controller.boardcontroller.BoardInfoController;
-import com.example.backend.controller.boardcontroller.BoardUpdateController;
-import com.example.backend.controller.commentcontroller.CommentDeleteController;
-import com.example.backend.controller.commentcontroller.CommentInfoController;
-import com.example.backend.controller.commentcontroller.CommentRegisterController;
-import com.example.backend.controller.commentcontroller.CommentUpdateController;
+import com.example.backend.controller.boardcommentcontroller.*;
+import com.example.backend.controller.boardcontroller.*;
 
+import com.example.backend.controller.bookboardcommentcontroller.BookBoardCommentDeleteController;
+import com.example.backend.controller.bookboardcommentcontroller.BookBoardCommentInfoController;
+import com.example.backend.controller.bookboardcommentcontroller.BookBoardCommentRegisterController;
+import com.example.backend.controller.bookboardcommentcontroller.BookBoardCommentUpdateController;
 import com.example.backend.controller.bookboardcontroller.BookBoardDeleteController;
 import com.example.backend.controller.bookboardcontroller.BookBoardInfoController;
 import com.example.backend.controller.bookboardcontroller.BookBoardRegisterController;
@@ -55,17 +53,32 @@ public class FrontController extends HttpServlet  {
         //book
         ControllerMap.put("/api/book", new BookInfoController());
 
+        // book_board_comment(댓글)
+        ControllerMap.put("/api/bookboard/comment/register", new BookBoardCommentRegisterController());
+        ControllerMap.put("/api/bookboard/comment/update", new BookBoardCommentUpdateController());
+        ControllerMap.put("/api/bookboard/comment/delete", new BookBoardCommentDeleteController());
+        // book_board_id=?인 책등록글에 있는 모든 댓글들 가져오기 // ex) /api/bookboard/comment?book_board_id=?
+        // user_login_id: 로그인할때 입력하는 id(문자열) (auto_increment아님)
+        ControllerMap.put("/api/bookboard/comment", new BookBoardCommentInfoController());
+
         //board
         ControllerMap.put("/api/board/create", new BoardCreateController());
         ControllerMap.put("/api/board/update", new BoardUpdateController());
         ControllerMap.put("/api/board/delete", new BoardDeleteController());
-        ControllerMap.put("/api/board", new BoardInfoController());
 
-        // comment(댓글)
-        ControllerMap.put("/api/board/comment/register", new CommentRegisterController());
-        ControllerMap.put("/api/board/comment/update", new CommentUpdateController());
-        ControllerMap.put("/api/board/comment/delete", new CommentDeleteController());
-        ControllerMap.put("/api/comment", new CommentInfoController());
+        // board_id가 ?인 게시판과 댓글들 가져오기 // ex) /api/board?id=?
+        ControllerMap.put("/api/board", new BoardInfoController());
+        // 게시판에 있는 모든 글 가져오기 // ex) /api/board/all
+        ControllerMap.put("/api/board/all", new BoardTotalController());
+
+        // board_comment(댓글)
+        ControllerMap.put("/api/board/comment/register", new BoardCommentRegisterController());
+        ControllerMap.put("/api/board/comment/update", new BoardCommentUpdateController());
+        ControllerMap.put("/api/board/comment/delete", new BoardCommentDeleteController());
+        // board_id가 ?인 게시판에 있는 모든 댓글들 가져오기 // ex) /api/board/comment?board_id=?
+        ControllerMap.put("/api/board/comment", new BoardCommentInfoFindByBoard_IDController());
+       //comment_id가 ?인 댓글 가져오기(쓸일이 있을까?) // ex) /api/comment?id=?
+        ControllerMap.put("/api/comment", new BoardCommentInfoFindByIDController());
     }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

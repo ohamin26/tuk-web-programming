@@ -1,15 +1,13 @@
 package com.example.backend.dao;
 
-import com.example.backend.model.Board;
-import com.example.backend.model.BoardComment;
-import com.example.backend.model.Comment;
-import com.example.backend.model.User;
+import com.example.backend.model.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BoardDao {
     Connection conn = null;
@@ -30,7 +28,7 @@ public class BoardDao {
     public Board findByID(int id) {
         open();
         Board board = new Board();
-        String sql = "SELECT * FROM `BOARD` WHERE id = ?";
+        String sql = "select b.*, u.user_id  as user_login_id from BOARD as b inner join USER as u on b.user_id=u.id where b.id=?";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1,id);
@@ -38,6 +36,7 @@ public class BoardDao {
             while (rs.next()) {
                 board.setId(rs.getInt("id"));
                 board.setUser_id(rs.getInt("user_id"));
+                board.setUser_login_id(rs.getString("user_login_id"));
                 board.setTitle(rs.getString("title"));
                 board.setContent(rs.getString("content"));
                 board.setLike(rs.getInt("like"));
@@ -87,16 +86,50 @@ public class BoardDao {
     public int update(int id, String title, String content) {
         open();
         int querySuccessCheck =0;
-        String sql = "update `BOARD` set title=?, content=? where id=? ";
-        try {
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, title);
-            pstmt.setString(2, content);
-            pstmt.setInt(3, id);
 
-            querySuccessCheck = pstmt.executeUpdate(); // insert 성공하면 1 실패하면 0
-        } catch (Exception e) {
-            e.printStackTrace();
+        // 제목 그대로, 콘텐츠만 바꿈
+        if (title==null){
+            String sql = "update `BOARD` set content=? where id=? ";
+            try {
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, content);
+                pstmt.setInt(2, id);
+
+                querySuccessCheck = pstmt.executeUpdate(); // insert 성공하면 1 실패하면 0
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // 제목만 바꿈, 콘텐츠 그대로
+        else if(content==null){
+            String sql = "update `BOARD` set title=? where id=? ";
+            try {
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, title);
+                pstmt.setInt(2, id);
+
+                querySuccessCheck = pstmt.executeUpdate(); // insert 성공하면 1 실패하면 0
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // 없으면 그냥 그대로
+        else if(title==null && content==null){
+
+        }
+        // 둘다 바꿈
+        else{
+            String sql = "update `BOARD` set title=?, content=? where id=? ";
+            try {
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, title);
+                pstmt.setString(2, content);
+                pstmt.setInt(3, id);
+
+                querySuccessCheck = pstmt.executeUpdate(); // insert 성공하면 1 실패하면 0
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return querySuccessCheck;
     }
@@ -122,7 +155,7 @@ public class BoardDao {
         open();
         ArrayList<BoardComment> comments = new ArrayList<>(); // 타입 지정
 //        String sql = "SELECT * FROM \"COMMENT\" inner join `USER` on user_id WHERE  board_id = ?";
-        String sql = "select c.id, u.user_id, u.nickname, c.board_id, c.content, c.create_date from comment as c inner join user as u on c.user_id=u.id where c.board_id=?;";
+        String sql = "select c.id, u.user_id, u.nickname, c.board_id, c.content, c.create_date from BOARD_COMMENT as c inner join USER as u on c.user_id=u.id where c.board_id=?;";
 
 
         try {
@@ -144,5 +177,31 @@ public class BoardDao {
             e.printStackTrace();
         }
         return comments;
+    }
+
+    public List<Board> findAll() {
+        open();
+        ArrayList<Board> schoolList = new ArrayList<>();
+        String sql = "select b.*, u.user_id  as user_login_id from BOARD as b inner join USER as u on b.user_id=u.id";
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Board board = new Board();
+                board.setId(rs.getInt("id"));
+                board.setUser_login_id(rs.getString("user_login_id"));
+                board.setUser_id(rs.getInt("user_id"));
+                board.setTitle(rs.getString("title"));
+                board.setContent(rs.getString("content"));
+                board.setLike(rs.getInt("like"));
+                board.setView_count(rs.getInt("view_count"));
+                board.setCreate_date(rs.getTimestamp("create_date"));
+                schoolList.add(board);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return schoolList;
     }
 }

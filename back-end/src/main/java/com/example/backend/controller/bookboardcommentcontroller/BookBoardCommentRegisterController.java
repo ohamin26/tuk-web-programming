@@ -1,11 +1,9 @@
-package com.example.backend.controller.commentcontroller;
+package com.example.backend.controller.bookboardcommentcontroller;
 
 import com.example.backend.controller.Controller;
-import com.example.backend.dao.BoardDao;
-import com.example.backend.dao.CommentDao;
+import com.example.backend.dao.BookBoardCommentDao;
 import com.example.backend.json.JsonParsing;
-import com.example.backend.model.Board;
-import com.example.backend.model.Comment;
+import com.example.backend.model.BookBoardComment;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public class CommentRegisterController implements Controller {
-    CommentDao commentDao = new CommentDao();
-    Comment comment = new Comment();
+public class BookBoardCommentRegisterController implements Controller {
+    BookBoardCommentDao bookBoardCommentDao = new BookBoardCommentDao();
+    BookBoardComment bookBoardComment = new BookBoardComment();
 
 //    private static final String SECRET_KEY = "webServiceProgramingProjectCodeByYSJ2018148023";//비밀키
 //    private static final long EXPIRATION_TIME = 360000; // 유효기간 1시간
@@ -29,11 +27,11 @@ public class CommentRegisterController implements Controller {
         //http body의 json 파싱후 map 변환.
         Map<String, String> jsonMap = JsonParsing.parsing(request);
 
-        comment.setUser_id(Integer.parseInt((jsonMap.get("user_id"))));
-        comment.setBoard_id(Integer.parseInt((jsonMap.get("board_id"))));
-        comment.setContent(jsonMap.get("content"));
+        bookBoardComment.setUser_id(Integer.parseInt((jsonMap.get("user_id"))));
+        bookBoardComment.setBook_board_id(Integer.parseInt((jsonMap.get("book_board_id"))));
+        bookBoardComment.setContent(jsonMap.get("content"));
 
-        int id = commentDao.register(comment);
+        int id = bookBoardCommentDao.register(bookBoardComment);
         int querySuccessCheck=0;
         if (id>0){
             querySuccessCheck=1;

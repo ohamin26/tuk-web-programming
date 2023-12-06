@@ -1,6 +1,5 @@
 package com.example.backend.dao;
 
-import com.example.backend.model.Board;
 import com.example.backend.model.Comment;
 
 import java.sql.Connection;
@@ -8,9 +7,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
-public class CommentDao {
+public class BoardCommentDao {
     Connection conn = null;
     PreparedStatement pstmt;
     String JDBC_DRIVER = "org.h2.Driver";
@@ -29,7 +27,7 @@ public class CommentDao {
     public int register(Comment comment) {
         open();
         int querySuccessCheck =0;
-        String sql = "insert into `COMMENT`(user_id, board_id, content) " +
+        String sql = "insert into BOARD_COMMENT(user_id, board_id, content) " +
                 "values(?,?,?)";
         try {
             pstmt = conn.prepareStatement(sql);
@@ -60,7 +58,7 @@ public class CommentDao {
     public int update(int id, String content) {
         open();
         int querySuccessCheck =0;
-        String sql = "update `COMMENT` set content=? where id=? ";
+        String sql = "update BOARD_COMMENT set content=? where id=? ";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, content);
@@ -78,7 +76,7 @@ public class CommentDao {
     public int deleteById(int id) {
         open();
         int querySuccessCheck =0;
-        String sql = "delete from `COMMENT` where id=? ";
+        String sql = "delete from BOARD_COMMENT where id=? ";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
@@ -94,7 +92,7 @@ public class CommentDao {
     public Comment findByID(int id) {
         open();
         Comment comment = new Comment();
-        String sql = "SELECT * FROM \"COMMENT\" WHERE id = ?";
+        String sql = "SELECT * FROM BOARD_COMMENT WHERE id = ?";
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1,id);
@@ -111,6 +109,34 @@ public class CommentDao {
             e.printStackTrace();
         }
         return comment;
+    }
+
+    //회원정보
+    public ArrayList<Comment> findByBoard_ID(int board_id) {
+        open();
+        ArrayList<Comment> comments = new ArrayList<>();
+
+//        String sql = "SELECT * FROM BOARD_COMMENT WHERE board_id = ?";
+        String sql = "SELECT bc.*, u.user_id as user_login_id FROM BOARD_COMMENT as bc  inner join USER as u on bc.user_id=u.id WHERE board_id =?";
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,board_id);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Comment comment = new Comment();
+                comment.setId(rs.getInt("id"));
+                comment.setUser_id(rs.getInt("user_id"));
+                comment.setUser_login_id(rs.getString("user_login_id"));
+                comment.setBoard_id(rs.getInt("board_id"));
+                comment.setContent(rs.getString("content"));
+                comment.setCreate_date(rs.getTimestamp("create_date"));
+                comments.add(comment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return comments;
     }
 
 //    public String findPasswordByUserId(String userId) {

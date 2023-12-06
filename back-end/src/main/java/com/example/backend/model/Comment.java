@@ -6,6 +6,7 @@ public class Comment {
     private int id;
     private int user_id;
     private int board_id;
+    private String user_login_id;
     private String content;
     private Timestamp create_date;
 
@@ -23,6 +24,14 @@ public class Comment {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public String getUser_login_id() {
+        return user_login_id;
+    }
+
+    public void setUser_login_id(String user_login_id) {
+        this.user_login_id = user_login_id;
     }
 
     public int getBoard_id() {
