@@ -10,7 +10,7 @@ import { Header } from './components/header';
 import './css/App.css';
 import { SearchResault } from './routes/search_result';
 import { School } from './routes/school';
-import { Board } from './routes/board';
+import { Board } from './routes/board_list';
 import { BoardDetail } from './routes/board_detail';
 import { Login } from './routes/login';
 import { TokenProvider } from './context/TokenContext';
@@ -20,6 +20,9 @@ import { BookList } from './routes/book_list';
 import { BookRegister } from './routes/book_register';
 import { useEffect } from 'react';
 import { MyPage } from './routes/my_page';
+import { MySaleList } from './routes/my_sale_list';
+import { MyBoardList } from './routes/my_board_list';
+import { BookBoardUpdate } from './routes/board_update';
 
 export const App = () => {
     const isRootPath = window.location.pathname;
@@ -39,7 +42,7 @@ export const App = () => {
                             element={<SearchResault />}
                         ></Route>
                         <Route path="/school" element={<School />}></Route>
-                        <Route path="/board" element={<Board />}></Route>
+                        <Route path="/board_list" element={<Board />}></Route>
                         <Route
                             path="/board_detail"
                             element={<BoardDetail />}
@@ -55,6 +58,18 @@ export const App = () => {
                             element={<BookRegister />}
                         ></Route>
                         <Route path="/my_page" element={<MyPage />}></Route>
+                        <Route
+                            path="/my_sale_list"
+                            element={<MySaleList />}
+                        ></Route>
+                        <Route
+                            path="/my_board_list"
+                            element={<MyBoardList />}
+                        ></Route>
+                        <Route
+                            path="/board_update"
+                            element={<BookBoardUpdate />}
+                        ></Route>
                     </Routes>
                 </Router>
             </div>

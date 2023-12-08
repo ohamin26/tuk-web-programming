@@ -1,43 +1,36 @@
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/board.css';
-
+import { useEffect, useState } from 'react';
+interface BoardInfo {
+    title: string;
+    content: string;
+    create_date: string;
+    user_id: string;
+    user_login_id: string;
+    id: string;
+}
 export const Board = () => {
     const navigate = useNavigate();
     const onClick = () => {
         navigate('/board_write');
     };
-    const dummyList = [
-        {
-            id: 1,
-            text: '제목입니다.',
-            author: '김철수',
-            date: '23-11-27',
-        },
-        {
-            id: 2,
-            text: '제목입니다.',
-            author: '김철수',
-            date: '23-11-27',
-        },
-        {
-            id: 3,
-            text: '제목입니다.',
-            author: '김철수',
-            date: '23-11-27',
-        },
-        {
-            id: 4,
-            text: '제목입니다.',
-            author: '김철수',
-            date: '23-11-27',
-        },
-        {
-            id: 5,
-            text: '제목입니다.',
-            author: '김철수',
-            date: '23-11-27',
-        },
-    ];
+    const [loading, setLoading] = useState(true);
+    const [boardInfo, setBoardInfo] = useState<BoardInfo[]>([]);
+    const getBoardInfo = async () => {
+        try {
+            const response = await (
+                await fetch(`http://localhost:8080/api/board/all`)
+            ).json();
+
+            setBoardInfo(response);
+            setLoading(false);
+        } catch (error: any) {
+            console.log('게시판 조회 실패');
+        }
+    };
+    useEffect(() => {
+        getBoardInfo();
+    }, []);
     return (
         <div className="cover_board">
             <table className="board">
@@ -64,16 +57,16 @@ export const Board = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {dummyList.map((item) => (
+                    {boardInfo.map((item, index) => (
                         <tr>
-                            <td>{item.id}</td>
+                            <td>{index + 1}</td>
                             <td>
                                 <Link to="/board_detail" state={item.id}>
-                                    {item.text}
+                                    {item.title}
                                 </Link>
                             </td>
-                            <td>{item.author}</td>
-                            <td>{item.date}</td>
+                            <td>{item.user_login_id}</td>
+                            <td>{item.create_date.slice(0, 10)}</td>
                         </tr>
                     ))}
                 </tbody>

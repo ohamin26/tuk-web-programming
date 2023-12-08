@@ -3,17 +3,21 @@ import { useForm } from 'react-hook-form';
 import '../css/board_write.css';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { useToken } from '../context/TokenContext';
+import { useLocation } from 'react-router-dom';
+
 interface BookInfo {
     isbn: string;
     name: string;
 }
-export const BookRegister = () => {
+
+export const BookBoardUpdate = () => {
     const {
         register,
         handleSubmit,
         formState: { isSubmitted, isSubmitting, errors },
     } = useForm();
 
+    const location = useLocation();
     const { token } = useToken();
     const [bookInfo, setBookInfo] = useState<BookInfo[]>([]);
     let id: string | undefined;
@@ -33,6 +37,7 @@ export const BookRegister = () => {
         '매우나쁨',
         // Add more schools as needed
     ];
+    const bookSale = ['판매중', '판매완료'];
     const getBookInfo = async () => {
         try {
             const response = await (
@@ -55,13 +60,18 @@ export const BookRegister = () => {
             const selectedSchoolIndex = bookStatusOptions.findIndex(
                 (book_status) => book_status === data.book_status
             );
-            const school_id = String(selectedSchoolIndex + 1);
+            const selectedBookIndex = bookSale.findIndex(
+                (book_status) => book_status === data.book_sale
+            );
+            const isSale = selectedBookIndex === 0 ? true : false;
             // 파일이 아닌 데이터를 JSON 문자열로 추가
             const bookData = {
+                id: location.state,
                 title: data.title,
                 text: data.text,
                 user_id: id,
                 book_status: selectedSchoolIndex,
+                book_sale: isSale,
                 place: data.place,
                 // 다른 파일이 아닌 필드들을 여기에 추가하세요
             };
@@ -73,7 +83,7 @@ export const BookRegister = () => {
             console.log(data.image[0]);
 
             const response = await fetch(
-                'http://localhost:8080/api/bookboard/register',
+                'http://localhost:8080/api/bookboard/update',
                 {
                     method: 'POST',
                     body: formData,
@@ -85,10 +95,10 @@ export const BookRegister = () => {
             if (!response.ok) {
                 throw new Error('서버 오류');
             }
-            alert('판매글이 성공적으로 저장되었습니다.');
+            alert('판매글이 성공적으로 수정되었습니다.');
         } catch (error: any) {
             console.log(data);
-            alert('판매글 저장 실패!');
+            alert('판매글 수정 실패!');
         }
     };
     return (
@@ -138,6 +148,29 @@ export const BookRegister = () => {
                                 선택하세요
                             </option>
                             {bookStatusOptions.map((status, index) => (
+                                <option key={index} value={status}>
+                                    {status}
+                                </option>
+                            ))}
+                        </select>
+                        <label htmlFor="book_sale">판매여부 </label>
+                        <select
+                            id="book_sale"
+                            aria-invalid={
+                                isSubmitted
+                                    ? errors.isbn
+                                        ? 'true'
+                                        : 'false'
+                                    : undefined
+                            }
+                            {...register('book_sale', {
+                                required: '필수 항목입니다.',
+                            })}
+                        >
+                            <option value="" disabled>
+                                선택하세요
+                            </option>
+                            {bookSale.map((status, index) => (
                                 <option key={index} value={status}>
                                     {status}
                                 </option>

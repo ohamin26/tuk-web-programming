@@ -17,13 +17,16 @@ export const Login = () => {
 
     const fetchJwtToken = async (loginData: any) => {
         try {
-            const response = await fetch('http://localhost:8080/user/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData),
-            });
+            const response = await fetch(
+                'http://localhost:8080/api/user/login',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData),
+                }
+            );
 
             console.log(JSON.stringify(loginData));
             console.log('응답 상태 코드:', response.status);
