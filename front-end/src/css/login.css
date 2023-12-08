@@ -30,11 +30,11 @@
     background-color: black;
     margin-top: 20px;
     border-radius: 10px;
-    width: 100%; /* 버튼이 부모의 100% 폭을 차지하도록 설정 */
+    width: 100%;
 }
 .login-form small {
     display: block;
     margin-bottom: 10px;
-    overflow-wrap: break-word; /* 단어 단위로 줄 바꿈 */
-    color: red; /* 에러 메시지 색상 변경 */
+    overflow-wrap: break-word;
+    color: red;
 }

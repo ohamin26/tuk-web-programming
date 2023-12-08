@@ -19,7 +19,17 @@ interface UserInfo {
     createDate: string;
     school_id: number;
 }
-
+interface BookInfo {
+    title: string;
+    content: string;
+    create_data: string;
+    view_count: string;
+    filePath: string;
+    is_sale: boolean;
+    place: string;
+    book_status: string;
+    id: string;
+}
 export const Home = () => {
     const dummyList = [
         {
@@ -73,6 +83,22 @@ export const Home = () => {
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [schoolInfo, setSchoolInfo] = useState<SchoolInfo | null>(null);
     const [loading, setLoading] = useState(true);
+    const [bookInfo, setBookInfo] = useState<BookInfo[]>([]);
+    const getBookInfo = async () => {
+        try {
+            const response = await (
+                await fetch(`http://localhost:8080/api/bookboard/all`)
+            ).json();
+
+            setBookInfo(response);
+            setLoading(false);
+        } catch (error: any) {
+            console.log('판매글 게시판 정보 조회 실패');
+        }
+    };
+    useEffect(() => {
+        getBookInfo();
+    }, []);
     let id: string | undefined;
     if (token) {
         const decodedToken: JwtPayload & { id: string } = jwtDecode(token);
@@ -121,25 +147,31 @@ export const Home = () => {
 
     console.log(token);
     return (
-        <div>
-            {schoolInfo?.name}
-            <div className="cover">
-                {dummyList.map((item) => (
-                    <div className="card">
-                        <img
-                            src={image}
-                            alt=""
-                            onClick={() => onClick(item.id)}
-                        />
-                        <span className="heading">글 제목 : {item.id}</span>
-                        <div className="data">
-                            <span>가격 : {item.text}</span>
-                            <span>위치 : {item.text}</span>
-                        </div>
-                        <span className="text-h">관심수 : 3</span>
-                    </div>
-                ))}
-            </div>
+        <div className="cover">
+            {loading
+                ? '로딩중'
+                : bookInfo
+                      .map((item) => (
+                          <div className="card">
+                              <img
+                                  src={`http://localhost:8080/${item.filePath}`}
+                                  alt=""
+                                  onClick={() => onClick(item.id)}
+                              />
+                              <span className="heading">{item.title}</span>
+                              <div className="data">
+                                  <span>가격 : {item.place}</span>
+                                  <span>
+                                      판매여부 :{' '}
+                                      {item.is_sale ? '판매중' : '판매완료'}
+                                  </span>
+                              </div>
+                              <span className="text-h">
+                                  조회수 : {item.view_count}
+                              </span>
+                          </div>
+                      ))
+                      .slice(0, 3)}
         </div>
     );
 };

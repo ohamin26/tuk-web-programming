@@ -40,7 +40,7 @@ export const Header = () => {
                 </Link>
                 <ul>
                     <li>
-                        <Link to="/board">
+                        <Link to="/board_list">
                             <span>자유게시판</span>
                         </Link>
                     </li>

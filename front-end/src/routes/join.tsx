@@ -22,13 +22,16 @@ export const Join = () => {
             const school_id = String(selectedSchoolIndex + 1);
             loginData.school_id = school_id;
 
-            const response = await fetch('http://localhost:8080/user/join', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData),
-            });
+            const response = await fetch(
+                'http://localhost:8080/api/user/join',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData),
+                }
+            );
             console.log(JSON.stringify(loginData));
             console.log('응답 상태 코드:', response.status);
             if (!response.ok) {
