@@ -28,6 +28,7 @@ public class BoardCreateController implements Controller {
         // 응답 헤더 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
         //http body의 json 파싱후 map 변환.
         Map<String, String> jsonMap = JsonParsing.parsing(request);
@@ -44,6 +45,7 @@ public class BoardCreateController implements Controller {
 
         int id = boardDao.create(board);
         int querySuccessCheck=0;
+
         if (id>0){
             querySuccessCheck=1;
             String json = String.format("\"querySuccessCheck\" : %d,\n\"id\" : %d", querySuccessCheck, id);

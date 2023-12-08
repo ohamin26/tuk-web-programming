@@ -19,6 +19,7 @@ public class BoardInfoController implements Controller {
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
         String pathInfo = request.getPathInfo();
         Board board = boardDao.findByID(Integer.parseInt(request.getParameter("id")));

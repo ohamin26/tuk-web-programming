@@ -23,6 +23,7 @@ public class BookBoardCommentRegisterController implements Controller {
         // 응답 헤더 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
         //http body의 json 파싱후 map 변환.
         Map<String, String> jsonMap = JsonParsing.parsing(request);
