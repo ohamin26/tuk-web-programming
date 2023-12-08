@@ -9,14 +9,16 @@ import com.example.backend.controller.commentcontroller.CommentInfoController;
 import com.example.backend.controller.commentcontroller.CommentRegisterController;
 import com.example.backend.controller.commentcontroller.CommentUpdateController;
 
-import com.example.backend.controller.bookboardcontroller.BookBoardDeleteController;
-import com.example.backend.controller.bookboardcontroller.BookBoardInfoController;
-import com.example.backend.controller.bookboardcontroller.BookBoardRegisterController;
-import com.example.backend.controller.bookboardcontroller.BookBoardTotalController;
+import com.example.backend.controller.bookboardcontroller.*;
 import com.example.backend.controller.bookcontroller.BookInfoController;
 
 import com.example.backend.controller.schoolcontroller.SchoolInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolTotalController;
+import com.example.backend.controller.usercontroller.UserDeleteController;
+import com.example.backend.controller.usercontroller.UserInfoController;
+import com.example.backend.controller.usercontroller.UserJoinController;
+import com.example.backend.controller.usercontroller.UserLoginController;
+import com.example.backend.controller.bookboardcontroller.BookBoardUpdateController;
 import com.example.backend.controller.usercontroller.*;
 
 
@@ -47,11 +49,11 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/api/school/all", new SchoolTotalController());
 
         //bookboard
+        ControllerMap.put("/api/bookboard/update", new BookBoardUpdateController());
         ControllerMap.put("/api/bookboard/register", new BookBoardRegisterController());
         ControllerMap.put("/api/bookboard/delete", new BookBoardDeleteController());
         ControllerMap.put("/api/bookboard", new BookBoardInfoController());
         ControllerMap.put("/api/bookboard/all", new BookBoardTotalController());
-
         //book
         ControllerMap.put("/api/book", new BookInfoController());
 
