@@ -18,6 +18,7 @@ public class BookBoardCommentDeleteController implements Controller {
         // 응답 헤더 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
         Map<String, String> jsonMap = JsonParsing.parsing(request);
 
