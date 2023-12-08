@@ -3,14 +3,14 @@ import { useForm } from 'react-hook-form';
 import '../css/board_write.css';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { useToken } from '../context/TokenContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface BookInfo {
     isbn: string;
     name: string;
 }
 
-export const BookBoardUpdate = () => {
+export const BoardUpdate = () => {
     const {
         register,
         handleSubmit,
@@ -20,6 +20,7 @@ export const BookBoardUpdate = () => {
     const location = useLocation();
     const { token } = useToken();
     const [bookInfo, setBookInfo] = useState<BookInfo[]>([]);
+    const navigate = useNavigate();
     let id: string | undefined;
     let user_id: string | undefined;
 
@@ -29,15 +30,6 @@ export const BookBoardUpdate = () => {
         user_id = decodedToken.sub;
     }
     const [loading, setLoading] = useState(true);
-    const bookStatusOptions = [
-        '매우좋음',
-        '좋음',
-        '보통',
-        '나쁨',
-        '매우나쁨',
-        // Add more schools as needed
-    ];
-    const bookSale = ['판매중', '판매완료'];
     const getBookInfo = async () => {
         try {
             const response = await (
@@ -55,39 +47,15 @@ export const BookBoardUpdate = () => {
     }, []);
     const onSubmit = async (data: any) => {
         try {
-            // submit 버튼을 눌렀을 때 서버에 로그인 정보를 전송하고 JWT를 받아오기
-            const formData = new FormData();
-            const selectedSchoolIndex = bookStatusOptions.findIndex(
-                (book_status) => book_status === data.book_status
-            );
-            const selectedBookIndex = bookSale.findIndex(
-                (book_status) => book_status === data.book_sale
-            );
-            const isSale = selectedBookIndex === 0 ? true : false;
-            // 파일이 아닌 데이터를 JSON 문자열로 추가
-            const bookData = {
-                id: location.state,
-                title: data.title,
-                text: data.text,
-                user_id: id,
-                book_status: selectedSchoolIndex,
-                book_sale: isSale,
-                place: data.place,
-                // 다른 파일이 아닌 필드들을 여기에 추가하세요
-            };
-            formData.append('bookData', JSON.stringify(bookData));
-
-            // 파일 데이터 추가
-            formData.append('image', data.image[0]);
-
-            console.log(data.image[0]);
-
+            data.id = String(location.state.id);
             const response = await fetch(
-                'http://localhost:8080/api/bookboard/update',
+                'http://localhost:8080/api/board/update',
                 {
                     method: 'POST',
-                    body: formData,
-                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
                 }
             );
 
@@ -96,6 +64,8 @@ export const BookBoardUpdate = () => {
                 throw new Error('서버 오류');
             }
             alert('판매글이 성공적으로 수정되었습니다.');
+            navigate('/my_board_list');
+            window.location.reload();
         } catch (error: any) {
             console.log(data);
             alert('판매글 수정 실패!');
@@ -105,131 +75,41 @@ export const BookBoardUpdate = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="card-w">
                 <div className="card-write">
-                    <br />
                     <div className="title">
-                        <label htmlFor="isbn">책이름 </label>
-                        <select
+                        <label htmlFor="id">
+                            <span>제목</span>
+                        </label>
+                        <input
                             id="title"
+                            type="text"
+                            placeholder="제목을 입력하세요"
                             aria-invalid={
                                 isSubmitted
-                                    ? errors.title
+                                    ? errors.id
                                         ? 'true'
                                         : 'false'
                                     : undefined
                             }
                             {...register('title', {
-                                required: '필수 항목입니다.',
+                                required: '제목은 필수 입력입니다.',
                             })}
-                        >
-                            <option value="" disabled>
-                                선택하세요
-                            </option>
-                            {bookInfo?.map((item) => (
-                                <option key={item.isbn} value={item.name}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
-                        <label htmlFor="book_status">책상태 </label>
-                        <select
-                            id="book_status"
-                            aria-invalid={
-                                isSubmitted
-                                    ? errors.isbn
-                                        ? 'true'
-                                        : 'false'
-                                    : undefined
-                            }
-                            {...register('book_status', {
-                                required: '필수 항목입니다.',
-                            })}
-                        >
-                            <option value="" disabled>
-                                선택하세요
-                            </option>
-                            {bookStatusOptions.map((status, index) => (
-                                <option key={index} value={status}>
-                                    {status}
-                                </option>
-                            ))}
-                        </select>
-                        <label htmlFor="book_sale">판매여부 </label>
-                        <select
-                            id="book_sale"
-                            aria-invalid={
-                                isSubmitted
-                                    ? errors.isbn
-                                        ? 'true'
-                                        : 'false'
-                                    : undefined
-                            }
-                            {...register('book_sale', {
-                                required: '필수 항목입니다.',
-                            })}
-                        >
-                            <option value="" disabled>
-                                선택하세요
-                            </option>
-                            {bookSale.map((status, index) => (
-                                <option key={index} value={status}>
-                                    {status}
-                                </option>
-                            ))}
-                        </select>
+                        />
                     </div>
-                    <br />
                     <div className="msg">
-                        <label htmlFor="price">
-                            <span>가격</span>
-                        </label>
-                        <input
-                            id="price"
-                            type="number"
-                            placeholder="가격을 입력하세요"
-                            aria-invalid={
-                                isSubmitted
-                                    ? errors.price
-                                        ? 'true'
-                                        : 'false'
-                                    : undefined
-                            }
-                            {...register('price', {
-                                required: '가격은 필수 입력입니다.',
-                            })}
-                        />
-                        <label htmlFor="place">
-                            <span>장소</span>
-                        </label>
-                        <input
-                            id="place"
-                            type="text"
-                            placeholder="장소를 입력하세요"
-                            aria-invalid={
-                                isSubmitted
-                                    ? errors.place
-                                        ? 'true'
-                                        : 'false'
-                                    : undefined
-                            }
-                            {...register('place', {
-                                required: '장소는 필수 입력입니다.',
-                            })}
-                        />
-                        <br />
-                        <label htmlFor="text">
+                        <label htmlFor="content">
                             <span>내용</span>
                         </label>
                         <textarea
-                            id="text"
+                            id="content"
                             placeholder="내용을 입력하세요"
                             aria-invalid={
                                 isSubmitted
-                                    ? errors.text
+                                    ? errors.content
                                         ? 'true'
                                         : 'false'
                                     : undefined
                             }
-                            {...register('text', {
+                            {...register('content', {
                                 required: '내용을 입력해주세요.',
                             })}
                         />
@@ -240,31 +120,13 @@ export const BookBoardUpdate = () => {
                                 ) : null}
                             </small>
                         )}
-                        <p></p>
-                        <label htmlFor="file">
-                            <span className="text-f">파일업로드</span>
-                        </label>
-                        <input
-                            {...register('image')}
-                            id="image"
-                            name="image"
-                            type="file"
-                            accept="image/*"
-                        ></input>
-                        {errors.id?.message && (
-                            <small role="alert">
-                                {typeof errors.image?.message === 'string' ? (
-                                    <span>{errors.image?.message}</span>
-                                ) : null}
-                            </small>
-                        )}
                     </div>
                     <button
                         className="btn-w"
                         type="submit"
                         disabled={isSubmitting}
                     >
-                        등록
+                        작성
                     </button>
                 </div>
             </div>
