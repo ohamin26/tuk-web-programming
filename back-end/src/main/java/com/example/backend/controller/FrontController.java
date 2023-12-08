@@ -2,10 +2,7 @@ package com.example.backend.controller;
 
 
 
-import com.example.backend.controller.bookboardcontroller.BookBoardDeleteController;
-import com.example.backend.controller.bookboardcontroller.BookBoardInfoController;
-import com.example.backend.controller.bookboardcontroller.BookBoardRegisterController;
-import com.example.backend.controller.bookboardcontroller.BookBoardTotalController;
+import com.example.backend.controller.bookboardcontroller.*;
 import com.example.backend.controller.bookcontroller.BookInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolInfoController;
 import com.example.backend.controller.schoolcontroller.SchoolTotalController;
@@ -13,6 +10,7 @@ import com.example.backend.controller.usercontroller.UserDeleteController;
 import com.example.backend.controller.usercontroller.UserInfoController;
 import com.example.backend.controller.usercontroller.UserJoinController;
 import com.example.backend.controller.usercontroller.UserLoginController;
+import com.example.backend.controller.bookboardcontroller.BookBoardUpdateController;
 
 
 import javax.servlet.*;
@@ -45,6 +43,7 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/bookboard/delete", new BookBoardDeleteController());
         ControllerMap.put("/bookboard", new BookBoardInfoController());
         ControllerMap.put("/bookboard/all", new BookBoardTotalController());
+        ControllerMap.put("/bookboard/update", new BookBoardUpdateController());
         //book
         ControllerMap.put("/book", new BookInfoController());
 
