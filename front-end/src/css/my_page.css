@@ -43,4 +43,10 @@
 
 .edit-profile-btn:hover {
     background-color: black;
+    cursor: pointer;
+    transform: translate(0, 0.25em);
+    &::before {
+        box-shadow: 0 0 0 2px --pink-border, 0 0.5em 0 0 --pink-shadow;
+        transform: translate3d(0, 0.5em, -1em);
+    }
 }

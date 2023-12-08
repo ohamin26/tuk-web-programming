@@ -3,62 +3,49 @@ import '../css/board_detail.css';
 import { useForm } from 'react-hook-form';
 import { CiStar } from 'react-icons/ci';
 import { FaStar } from 'react-icons/fa';
-import { useRef, useState } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
+interface BoardInfo {
+    title: string;
+    content: string;
+    create_date: string;
+    user_id: string;
+    id: string;
+    view_count: string;
+}
+interface UserInfo {
+    id: string;
+    userId: string;
+    name: string;
+    phoneNumber: string;
+    nickname: string;
+    major_id: number;
+    createDate: string;
+}
+interface CommentInfo {
+    id: string;
+    user_id: string;
+    content: string;
+}
 export const BoardDetail = () => {
-    const dummyList = [
-        {
-            id: 1,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 2,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 3,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 4,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 5,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 6,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 7,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 8,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-    ].slice(0, 6);
     const {
         register,
         handleSubmit,
         formState: { isSubmitted, isSubmitting, errors },
     } = useForm();
     const [content, setContent] = useState('');
+    const location = useLocation();
+    const [loading, setLoading] = useState(true);
+
+    const [boardInfo, setBoardInfo] = useState<BoardInfo | null>(null);
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+    const [commentInfo, setCommentInfo] = useState<CommentInfo[]>([]);
 
     const onSubmit = async (data: any) => {
         try {
+            data.user_id = userInfo?.id;
+            data.board_id = boardInfo?.id;
             const response = await fetch(
-                'http://localhost:8080//board/comment/register',
+                'http://localhost:8080/api/board/comment/register',
                 {
                     method: 'POST',
                     headers: {
@@ -74,9 +61,31 @@ export const BoardDetail = () => {
                 throw new Error('서버 오류');
             }
             alert('댓글이 저장되었습니다.');
+            window.location.reload();
         } catch (error: any) {
             console.log(data);
             alert('댓글 저장 실패!');
+        }
+    };
+    const onClick = async (index: number) => {
+        try {
+            const response = await (
+                await fetch(`http://localhost:8080/api/board/comment/delete`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(commentInfo[index]),
+                })
+            ).json();
+
+            console.log(JSON.stringify(commentInfo[index]));
+            console.log(response);
+            alert('댓글이 삭제되었습니다.');
+            window.location.reload();
+        } catch (error: any) {
+            console.log(commentInfo[index]);
+            console.log('댓글삭제 실패');
         }
     };
     const onKeyPress = (e: any) => {
@@ -87,35 +96,62 @@ export const BoardDetail = () => {
         }
     };
 
+    const getUserInfo = async (data: string | undefined) => {
+        try {
+            const response = await (
+                await fetch(`http://localhost:8080/api/user?id=${data}`)
+            ).json();
+
+            setUserInfo(response);
+            setLoading(false);
+        } catch (error: any) {
+            console.log('유저정보 조회 실패');
+        }
+    };
+    const getBoardInfo = async () => {
+        try {
+            const query = location.state.item
+                ? location.state.item
+                : location.state;
+            const response = await (
+                await fetch(`http://localhost:8080/api/board?id=${query}`)
+            ).json();
+
+            setBoardInfo(response);
+            setCommentInfo(response.comments);
+            getUserInfo(response.user_id);
+
+            setLoading(false);
+        } catch (error: any) {
+            console.log('게시판정보 조회 실패');
+        }
+    };
+
+    useEffect(() => {
+        getBoardInfo();
+    }, []);
+    console.log(commentInfo);
     return (
         <>
             <div className="board_container">
                 <div className="title">
-                    <h3>게시판 제목</h3>
+                    <h3>{boardInfo?.title}</h3>
                 </div>
                 <div className="myinfo">
                     <dl>
                         <dt>작성자</dt>
-                        <dd>김철수</dd>
+                        <dd>{userInfo?.name}</dd>
                     </dl>
                     <dl>
                         <dt>날짜</dt>
-                        <dd>23-11-28</dd>
+                        <dd>{boardInfo?.create_date.slice(0, 10)}</dd>
                     </dl>
                     <dl>
-                        <dt>관심수</dt>
-                        <dd>14회</dd>
+                        <dt>조회수</dt>
+                        <dd>{boardInfo?.view_count}회</dd>
                     </dl>
                 </div>
-                <div className="cont">
-                    내용입니다. <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                </div>
+                <div className="cont">{boardInfo?.content}</div>
                 <hr></hr>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="card-w">
@@ -125,7 +161,7 @@ export const BoardDetail = () => {
                                     <span>댓글</span>
                                 </label>
                                 <input
-                                    id="text"
+                                    id="content"
                                     type="text"
                                     placeholder="댓글을 입력하세요"
                                     onKeyUp={onKeyPress}
@@ -136,15 +172,21 @@ export const BoardDetail = () => {
                                                 : 'false'
                                             : undefined
                                     }
-                                    {...register('title', {
+                                    {...register('content', {
                                         required: '글자를 입력해주세요.',
                                     })}
                                 />
                             </div>
-                            {dummyList.map((item) => (
+                            {commentInfo.map((item, index) => (
                                 <>
                                     <div className="board_comment">
-                                        {item.author}:{item.text}
+                                        {item.user_id}: {item.content}
+                                        <button
+                                            type="button"
+                                            onClick={() => onClick(index)}
+                                        >
+                                            x
+                                        </button>
                                     </div>
                                 </>
                             ))}

@@ -28,7 +28,7 @@ export const MyPage = () => {
     const getUserInfo = async () => {
         try {
             const response = await (
-                await fetch(`http://localhost:8080/user?id=${id}`)
+                await fetch(`http://localhost:8080/api/user?id=${id}`)
             ).json();
 
             setUserInfo(response);
@@ -41,11 +41,17 @@ export const MyPage = () => {
     useEffect(() => {
         getUserInfo();
     }, []);
+    const onClickSale = () => {
+        navigate(`/my_sale_list`);
+    };
+    const onClickBoard = () => {
+        navigate(`/my_board_list`);
+    };
 
     const onClick = async () => {
         try {
             const response = await (
-                await fetch(`http://localhost:8080/user/delete`, {
+                await fetch(`http://localhost:8080/api/user/delete`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -54,7 +60,8 @@ export const MyPage = () => {
                 })
             ).json();
 
-            console.log(response);
+            console.log(JSON.stringify(userInfo));
+
             sessionStorage.removeItem('token');
             alert('회원탈퇴 완료!');
             navigate('/');
@@ -92,8 +99,10 @@ export const MyPage = () => {
                             회원 탈퇴
                         </button>
                     </div>
-                    <button className="edit-profile-btn">등록한 판매글</button>
-                    <button className="edit-profile-btn">
+                    <button className="edit-profile-btn" onClick={onClickSale}>
+                        등록한 판매글
+                    </button>
+                    <button className="edit-profile-btn" onClick={onClickBoard}>
                         등록한 게시판글
                     </button>
                 </>
