@@ -3,6 +3,22 @@ import '../css/home.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useToken } from '../context/TokenContext';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
+
+interface SchoolInfo {
+    id: string;
+    name: string;
+}
+interface UserInfo {
+    id: string;
+    userId: string;
+    name: string;
+    phoneNumber: string;
+    nickname: string;
+    major_id: number;
+    createDate: string;
+    school_id: number;
+}
 
 export const Home = () => {
     const dummyList = [
@@ -53,10 +69,60 @@ export const Home = () => {
     const onClick = (item: string | number) => {
         navigate(`/search-result?query=` + item, { state: { item } });
     };
+
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+    const [schoolInfo, setSchoolInfo] = useState<SchoolInfo | null>(null);
+    const [loading, setLoading] = useState(true);
+    let id: string | undefined;
+    if (token) {
+        const decodedToken: JwtPayload & { id: string } = jwtDecode(token);
+        id = decodedToken.id;
+    }
+
+    const getUserInfo = async () => {
+        try {
+            const response = await (
+                await fetch(`http://localhost:8080/user?id=${id}`)
+            ).json();
+
+            setUserInfo(response);
+            setLoading(false);
+
+            getSchoolInfo(response?.school_id);
+        } catch (error: any) {
+            console.log('유저정보 조회 실패');
+        }
+    };
+
+    const getSchoolInfo = async (schoolId: number | undefined) => {
+        try {
+            if (schoolId !== undefined) {
+                const response = await (
+                    await fetch(`http://localhost:8080/school?id=${schoolId}`)
+                ).json();
+
+                if (location.state != null) {
+                    setSchoolInfo(location.state);
+                } else {
+                    setSchoolInfo(response);
+                }
+                setLoading(false);
+            }
+        } catch (error: any) {
+            console.log('학교정보 조회 실패');
+        }
+    };
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
+
+    console.log(schoolInfo);
+
     console.log(token);
     return (
         <div>
-            {location.state}
+            {schoolInfo?.name}
             <div className="cover">
                 {dummyList.map((item) => (
                     <div className="card">
