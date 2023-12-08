@@ -1,10 +1,8 @@
-package com.example.backend.controller.commentcontroller;
+package com.example.backend.controller.boardcommentcontroller;
 
 import com.example.backend.controller.Controller;
-import com.example.backend.dao.BoardDao;
-import com.example.backend.dao.CommentDao;
+import com.example.backend.dao.BoardCommentDao;
 import com.example.backend.json.JsonParsing;
-import com.example.backend.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public class CommentUpdateController implements Controller {
-    CommentDao commentDao =new CommentDao();
+public class BoardCommentUpdateController implements Controller {
+    BoardCommentDao boardCommentDao =new BoardCommentDao();
 
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,7 +26,7 @@ public class CommentUpdateController implements Controller {
         String content = jsonMap.get("content");
 
         //insert 성공시 1 , 실패시 0
-        int querySuccessCheck = commentDao.update(id, content);
+        int querySuccessCheck = boardCommentDao.update(id, content);
 
         //Json 으로 리턴
         response.getWriter().write("{\"querySuccessCheck\" : \"" + querySuccessCheck + "\"}");

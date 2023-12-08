@@ -2,17 +2,13 @@ package com.example.backend.model;
 
 import java.sql.Timestamp;
 
-public class Board {
+public class BookBoardComment {
     private int id;
-    // user_id는 로그인할때 string이 아니라 db에 들어간 auto_increment임
+    private int book_board_id;
     private int user_id;
     private String user_login_id;
 
-
-    private String title;
     private String content;
-    private int like;
-    private int view_count;
     private Timestamp create_date;
 
     public int getId() {
@@ -23,6 +19,14 @@ public class Board {
         this.id = id;
     }
 
+    public int getBook_board_id() {
+        return book_board_id;
+    }
+
+    public void setBook_board_id(int book_board_id) {
+        this.book_board_id = book_board_id;
+    }
+
     public int getUser_id() {
         return user_id;
     }
@@ -30,7 +34,6 @@ public class Board {
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
-
 
     public String getUser_login_id() {
         return user_login_id;
@@ -40,36 +43,12 @@ public class Board {
         this.user_login_id = user_login_id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public int getLike() {
-        return like;
-    }
-
-    public void setLike(int like) {
-        this.like = like;
-    }
-
-    public int getView_count() {
-        return view_count;
-    }
-
-    public void setView_count(int view_count) {
-        this.view_count = view_count;
     }
 
     public Timestamp getCreate_date() {

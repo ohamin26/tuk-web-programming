@@ -2,15 +2,9 @@ package com.example.backend.controller.boardcontroller;
 
 import com.example.backend.controller.Controller;
 import com.example.backend.dao.BoardDao;
-import com.example.backend.dao.CommentDao;
-import com.example.backend.dao.UserDao;
 import com.example.backend.model.Board;
 import com.example.backend.model.BoardComment;
-import com.example.backend.model.Comment;
-import com.example.backend.model.User;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
