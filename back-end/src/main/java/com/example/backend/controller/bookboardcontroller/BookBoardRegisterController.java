@@ -67,6 +67,7 @@ public class BookBoardRegisterController implements Controller {
                     String place = jsonMap.get("place");
                     String bookStatus = jsonMap.get("book_status");
 
+
                     // jsonData를 사용하여 데이터베이스에 필요한 처리 수행
                     Book book = bookDao.findByName(title);
                     bookboard.setUser_id(userId);

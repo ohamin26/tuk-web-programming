@@ -104,15 +104,15 @@ public class BookBoardDao {
                 "values(?,?,?,?,?,?,?,?,?)";
         try {
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(2, bookboard.getUser_id());
-            pstmt.setInt(3, bookboard.getISBN());
-            pstmt.setString(4, bookboard.getTitle());
-            pstmt.setInt(5, bookboard.getPrice());
-            pstmt.setString(6, bookboard.getPlace());
-            pstmt.setString(7, bookboard.getContent());
-            pstmt.setInt(8, bookboard.getBook_status());
-            pstmt.setBoolean(9,bookboard.getIs_sale());
-            pstmt.setString(10,bookboard.getFilePath());
+            pstmt.setString(1, bookboard.getUser_id());
+            pstmt.setInt(2, bookboard.getISBN());
+            pstmt.setString(3, bookboard.getTitle());
+            pstmt.setInt(4, bookboard.getPrice());
+            pstmt.setString(5, bookboard.getPlace());
+            pstmt.setString(6, bookboard.getContent());
+            pstmt.setInt(7, bookboard.getBook_status());
+            pstmt.setBoolean(8,bookboard.getIs_sale());
+            pstmt.setString(9,bookboard.getFilePath());
             querySuccessCheck = pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,5 +135,33 @@ public class BookBoardDao {
         }
         return querySuccessCheck;
     }
+
+    public int updateById(BookBoard bookboard) {
+        open();
+        int querySuccessCheck = 0;
+        String sql = "UPDATE `BOOK_BOARD` " +
+                "SET user_id=?, isbn=?, title=?, price=?, place=?, content=?, book_status=?, is_sale=?, file_path=? " +
+                "WHERE id=?";
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, bookboard.getUser_id());
+            pstmt.setInt(2, bookboard.getISBN());
+            pstmt.setString(3, bookboard.getTitle());
+            pstmt.setInt(4, bookboard.getPrice());
+            pstmt.setString(5, bookboard.getPlace());
+            pstmt.setString(6, bookboard.getContent());
+            pstmt.setInt(7, bookboard.getBook_status());
+            pstmt.setBoolean(8, bookboard.getIs_sale());
+            pstmt.setString(9, bookboard.getFilePath());
+            pstmt.setInt(10, bookboard.getId()); // Assuming there is an ID field in your BOOK_BOARD table
+            querySuccessCheck = pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return querySuccessCheck;
+    }
+
 
 }
