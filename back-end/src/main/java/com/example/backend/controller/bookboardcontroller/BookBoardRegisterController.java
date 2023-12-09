@@ -77,7 +77,6 @@ public class BookBoardRegisterController implements Controller {
                     bookboard.setContent(text);
                     bookboard.setBook_status(Integer.valueOf(bookStatus));
                     bookboard.setIs_sale(true);
-                    bookBoardDao.register(bookboard);
 
                 } catch (JsonProcessingException e) {
                     // JSON 파싱 오류 처리
