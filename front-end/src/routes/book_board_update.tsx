@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import '../css/board_write.css';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { useToken } from '../context/TokenContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface BookInfo {
     isbn: string;
@@ -19,6 +19,7 @@ export const BookBoardUpdate = () => {
 
     const location = useLocation();
     const { token } = useToken();
+    const navigate = useNavigate();
     const [bookInfo, setBookInfo] = useState<BookInfo[]>([]);
     let id: string | undefined;
     let user_id: string | undefined;
@@ -29,14 +30,7 @@ export const BookBoardUpdate = () => {
         user_id = decodedToken.sub;
     }
     const [loading, setLoading] = useState(true);
-    const bookStatusOptions = [
-        '매우좋음',
-        '좋음',
-        '보통',
-        '나쁨',
-        '매우나쁨',
-        // Add more schools as needed
-    ];
+    const bookStatusOptions = ['매우좋음', '좋음', '보통', '나쁨', '매우나쁨'];
     const bookSale = ['판매중', '판매완료'];
     const getBookInfo = async () => {
         try {
@@ -55,7 +49,6 @@ export const BookBoardUpdate = () => {
     }, []);
     const onSubmit = async (data: any) => {
         try {
-            // submit 버튼을 눌렀을 때 서버에 로그인 정보를 전송하고 JWT를 받아오기
             const formData = new FormData();
             const selectedSchoolIndex = bookStatusOptions.findIndex(
                 (book_status) => book_status === data.book_status
@@ -64,7 +57,6 @@ export const BookBoardUpdate = () => {
                 (book_status) => book_status === data.book_sale
             );
             const isSale = selectedBookIndex === 0 ? true : false;
-            // 파일이 아닌 데이터를 JSON 문자열로 추가
             const bookData = {
                 id: location.state,
                 title: data.title,
@@ -73,11 +65,10 @@ export const BookBoardUpdate = () => {
                 book_status: selectedSchoolIndex,
                 book_sale: isSale,
                 place: data.place,
-                // 다른 파일이 아닌 필드들을 여기에 추가하세요
+                price: data.price,
             };
             formData.append('bookData', JSON.stringify(bookData));
 
-            // 파일 데이터 추가
             formData.append('image', data.image[0]);
 
             console.log(data.image[0]);
@@ -95,8 +86,11 @@ export const BookBoardUpdate = () => {
             if (!response.ok) {
                 throw new Error('서버 오류');
             }
+            console.log(JSON.stringify(bookData));
             alert('판매글이 성공적으로 수정되었습니다.');
+            navigate('/my_sale_list');
         } catch (error: any) {
+            console.log(location.state);
             console.log(data);
             alert('판매글 수정 실패!');
         }

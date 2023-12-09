@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import '../css/board_write.css';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { useToken } from '../context/TokenContext';
+import { useNavigate } from 'react-router-dom';
 interface BookInfo {
     isbn: string;
     name: string;
@@ -16,6 +17,7 @@ export const BookRegister = () => {
 
     const { token } = useToken();
     const [bookInfo, setBookInfo] = useState<BookInfo[]>([]);
+    const navigate = useNavigate();
     let id: string | undefined;
     let user_id: string | undefined;
 
@@ -25,21 +27,12 @@ export const BookRegister = () => {
         user_id = decodedToken.sub;
     }
     const [loading, setLoading] = useState(true);
-    const bookStatusOptions = [
-        '매우좋음',
-        '좋음',
-        '보통',
-        '나쁨',
-        '매우나쁨',
-        // Add more schools as needed
-    ];
+    const bookStatusOptions = ['매우좋음', '좋음', '보통', '나쁨', '매우나쁨'];
     const getBookInfo = async () => {
         try {
-            const response = await (
-                await fetch(`http://localhost:8080/api/book`)
-            ).json();
-
-            setBookInfo(response);
+            const response = await fetch('http://localhost:8080/api/book');
+            const data = await response.json();
+            setBookInfo(data);
             setLoading(false);
         } catch (error: any) {
             console.log('유저정보 조회 실패');
@@ -50,20 +43,17 @@ export const BookRegister = () => {
     }, []);
     const onSubmit = async (data: any) => {
         try {
-            // submit 버튼을 눌렀을 때 서버에 로그인 정보를 전송하고 JWT를 받아오기
             const formData = new FormData();
             const selectedSchoolIndex = bookStatusOptions.findIndex(
                 (book_status) => book_status === data.book_status
             );
             const school_id = String(selectedSchoolIndex + 1);
-            // 파일이 아닌 데이터를 JSON 문자열로 추가
             const bookData = {
                 title: data.title,
                 text: data.text,
                 user_id: id,
-                book_status: selectedSchoolIndex,
+                book_status: school_id,
                 place: data.place,
-                // 다른 파일이 아닌 필드들을 여기에 추가하세요
             };
             formData.append('bookData', JSON.stringify(bookData));
 
@@ -86,6 +76,7 @@ export const BookRegister = () => {
                 throw new Error('서버 오류');
             }
             alert('판매글이 성공적으로 저장되었습니다.');
+            navigate('/book_list');
         } catch (error: any) {
             console.log(data);
             alert('판매글 저장 실패!');

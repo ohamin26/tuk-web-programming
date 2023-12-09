@@ -21,7 +21,6 @@ export const MyBoardList = () => {
         id = decodedToken.id;
         user_id = decodedToken.sub;
     }
-    const [loading, setLoading] = useState(true);
     const [boardInfo, setBoardInfo] = useState<BoardInfo[]>([]);
     const onClickBtn = (item: string | number) => {
         navigate(`/board_detail?query=` + item, { state: { item } });
@@ -47,7 +46,7 @@ export const MyBoardList = () => {
             console.log(JSON.stringify(boardInfo[index]));
             console.log(response);
             alert('게시물삭제 완료!');
-            //window.location.reload();
+            window.location.reload();
         } catch (error: any) {
             console.log(boardInfo[index]);
             console.log('게시물삭제 실패');
@@ -60,7 +59,6 @@ export const MyBoardList = () => {
             ).json();
 
             setBoardInfo(response);
-            setLoading(false);
         } catch (error: any) {
             console.log('게시판 조회 실패');
         }
@@ -74,8 +72,8 @@ export const MyBoardList = () => {
                 <colgroup>
                     <col width="5%" />
                     <col width="30%" />
-                    <col width="5%" />
-                    <col width="20%" />
+                    <col width="10%" />
+                    <col width="15%" />
                     <col width="15%" />
                     <col width="15%" />
                 </colgroup>

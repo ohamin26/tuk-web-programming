@@ -31,48 +31,6 @@ interface BookInfo {
     id: string;
 }
 export const Home = () => {
-    const dummyList = [
-        {
-            id: 1,
-            text: '테스트입니다.',
-            image: image,
-        },
-        {
-            id: 2,
-            text: '테스트입니다.',
-            image: image,
-        },
-        {
-            id: 3,
-            text: '테스트입니다.',
-            image: image,
-        },
-        {
-            id: 4,
-            text: '테스트입니다.',
-            image: image,
-        },
-        {
-            id: 5,
-            text: '테스트입니다.',
-            image: image,
-        },
-        {
-            id: 6,
-            text: '테스트입니다.',
-            image: image,
-        },
-        {
-            id: 7,
-            text: '테스트입니다.',
-            image: image,
-        },
-        {
-            id: 8,
-            text: '테스트입니다.',
-            image: image,
-        },
-    ].slice(0, 6);
     const location = useLocation();
     const navigate = useNavigate();
     const { token } = useToken();

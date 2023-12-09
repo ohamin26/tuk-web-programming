@@ -7,7 +7,6 @@ export const Join = () => {
         '한국공학대학교',
         '경기과학기술대학교',
         '인천대학교',
-        // Add more schools as needed
     ];
     const {
         register,
