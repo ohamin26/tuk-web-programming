@@ -30,7 +30,7 @@ public class BookBoardDao {
         open();
         BookBoard bookboard = new BookBoard();
         String sqlSelect = "SELECT * FROM BOOK_BOARD WHERE id = ?";
-        String sqlUpdateClickCount = "UPDATE BOOK_BOARD SET click_count = click_count + 1 WHERE id = ?";
+        String sqlUpdateClickCount = "UPDATE BOOK_BOARD SET view_count = view_count + 1 WHERE id = ?";
 
         try {
 

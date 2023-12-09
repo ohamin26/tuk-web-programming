@@ -35,8 +35,8 @@ public class BookBoardUpdateController implements Controller {
             Part filePart = request.getPart("image");
             if (filePart != null) {
                 String filename = extractFileName(filePart);
-                String savePath = request.getServletContext().getRealPath("/WEB-INF/static/image/");
-                String imageUrl = request.getContextPath() + "static/image/" + filename;
+                String savePath = request.getSession().getServletContext().getRealPath("/");
+                String imageUrl = request.getContextPath() + "/" + filename;
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
