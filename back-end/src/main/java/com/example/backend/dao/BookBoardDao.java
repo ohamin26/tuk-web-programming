@@ -140,20 +140,20 @@ public class BookBoardDao {
         open();
         int querySuccessCheck = 0;
         String sql = "UPDATE `BOOK_BOARD` " +
-                "SET isbn=?, title=?, price=?, place=?, content=?, book_status=?, is_sale=?, file_path=? " +
-                "WHERE user_id=?";
+                "SET title=?, price=?, place=?, content=?, book_status=?, is_sale=?, file_path=? " +
+                "WHERE id=?";
 
         try {
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, bookboard.getISBN());
-            pstmt.setString(2, bookboard.getTitle());
-            pstmt.setInt(3, bookboard.getPrice());
-            pstmt.setString(4, bookboard.getPlace());
-            pstmt.setString(5, bookboard.getContent());
-            pstmt.setInt(6, bookboard.getBook_status());
-            pstmt.setBoolean(7, bookboard.getIs_sale());
-            pstmt.setString(8, bookboard.getFilePath());
-            pstmt.setString(9, bookboard.getUser_id());
+            pstmt.setString(1, bookboard.getTitle());
+            pstmt.setInt(2, bookboard.getPrice());
+            pstmt.setString(3, bookboard.getPlace());
+            pstmt.setString(4, bookboard.getContent());
+            pstmt.setInt(5, bookboard.getBook_status());
+            pstmt.setBoolean(6, bookboard.getIs_sale());
+            pstmt.setString(7, bookboard.getFilePath());
+            pstmt.setInt(8, bookboard.getId());
+
             querySuccessCheck = pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
