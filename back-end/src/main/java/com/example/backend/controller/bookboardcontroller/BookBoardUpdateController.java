@@ -6,6 +6,9 @@ import com.example.backend.dao.BookDao;
 import com.example.backend.json.JsonParsing;
 import com.example.backend.model.Book;
 import com.example.backend.model.BookBoard;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 @MultipartConfig
 public class BookBoardUpdateController implements Controller {
@@ -22,73 +26,78 @@ public class BookBoardUpdateController implements Controller {
 
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
 
         try {
-            // JSON 파싱을 통해 클라이언트에서 전송한 데이터를 Map으로 얻어옴
-            Map<String, String> jsonMap = JsonParsing.parsing(request);
+            // 게시판 수정을 위한 BookBoard 객체 생성
+            BookBoard bookboard = new BookBoard();
 
-            // 게시글의 ID를 가져옴
-            int id = Integer.parseInt(jsonMap.get("id"));
-
-            // 기존 게시글 정보를 가져옴
-            BookBoard existingBoard = bookBoardDao.findById(id);
-
-            // 새로운 데이터로 기존 게시글 정보를 업데이트
-            if (existingBoard != null) {
-                // 파일 업로드 처리
-                Part filePart = request.getPart("image");
-                if (filePart != null) {
-                    String filename = extractFileName(filePart);
-                    String savePath = request.getServletContext().getRealPath("/WEB-INF/static/image/");
-                    String imageUrl = request.getContextPath() + "static/image/" + filename;
-                    File fileSaveDir = new File(savePath);
-                    if (!fileSaveDir.exists()) {
-                        fileSaveDir.mkdir();
-                    }
-
-                    // 파일 저장
-                    filePart.write(savePath + File.separator + filename);
-
-                    // 파일 경로를 기존 게시글 객체에 저장
-                    existingBoard.setFilePath(imageUrl);
+            // 파일 업로드 처리
+            Part filePart = request.getPart("image");
+            if (filePart != null) {
+                String filename = extractFileName(filePart);
+                String savePath = request.getServletContext().getRealPath("/WEB-INF/static/image/");
+                String imageUrl = request.getContextPath() + "static/image/" + filename;
+                File fileSaveDir = new File(savePath);
+                if (!fileSaveDir.exists()) {
+                    fileSaveDir.mkdir();
                 }
 
-                // JSON 데이터를 사용하여 데이터베이스에 필요한 처리 수행
-                String title = jsonMap.get("title");
-                String text = jsonMap.get("text");
-                String userId = jsonMap.get("user_id");
-                String place = jsonMap.get("place");
-                String bookStatus = jsonMap.get("book_status");
+                // 파일 저장
+                filePart.write(savePath + File.separator + filename);
 
-
-                Book book = bookDao.findByName(title);
-                existingBoard.setUser_id(userId);
-                existingBoard.setISBN(book.getIsbn());
-                existingBoard.setTitle(title);
-                existingBoard.setPrice(book.getPrice());
-                existingBoard.setPlace(place);
-                existingBoard.setContent(text);
-                existingBoard.setBook_status(Integer.parseInt(bookStatus));
-                existingBoard.setIs_sale(true);
-
-                // 기존 게시글 업데이트 메소드 호출
-                int querySuccessCheck = bookBoardDao.updateById(existingBoard);
-
-                // 클라이언트에게 응답
-                response.getWriter().write("{\"querySuccessCheck\" : \"" + querySuccessCheck + "\"}");
-            } else {
-                // 해당 ID의 게시글이 없을 경우 오류 응답
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("{\"error\" : \"게시글을 찾을 수 없습니다.\"}");
+                // 파일 경로를 BookBoard 객체에 저장
+                bookboard.setFilePath(imageUrl);
             }
+
+            // JSON 데이터 처리
+            Part jsonPart = request.getPart("bookData");
+            if (jsonPart != null) {
+                String jsonData = getJsonData(request);
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    // JSON 데이터를 Map<String, String>으로 파싱
+                    Map<String, String> jsonMap = objectMapper.readValue(jsonData, new TypeReference<Map<String, String>>() {});
+
+                    // 여기에서 게시판 수정에 필요한 정보를 jsonMap에서 읽어와서 bookboard 객체에 설정
+                    String title = jsonMap.get("title");
+                    String text = jsonMap.get("text");
+                    String userId = jsonMap.get("user_id");
+                    String place = jsonMap.get("place");
+                    String bookStatus = jsonMap.get("book_status");
+
+                    // 기존의 게시판 정보를 가져와서 수정된 정보로 업데이트
+                    BookBoard existingBoard = bookBoardDao.findById(bookboard.getId());
+                    existingBoard.setUser_id(userId);
+                    existingBoard.setISBN(bookboard.getISBN());
+                    existingBoard.setTitle(title);
+                    existingBoard.setPrice(bookboard.getPrice());
+                    existingBoard.setPlace(place);
+                    existingBoard.setContent(text);
+                    existingBoard.setBook_status(Integer.valueOf(bookStatus));
+                    existingBoard.setIs_sale(true);
+
+                    // 수정된 게시판 정보를 데이터베이스에 업데이트
+                    bookBoardDao.updateById(existingBoard);
+
+                } catch (JsonProcessingException e) {
+                    // JSON 파싱 오류 처리
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    e.printStackTrace();
+                    return; // 오류 발생 시 종료
+                }
+            }
+
+            // 성공적인 응답
+            int querySuccessCheck = bookBoardDao.updateById(bookboard);
+            response.getWriter().write("{\"querySuccessCheck\" : \"" + querySuccessCheck + "\"}");
+
         } catch (Exception e) {
             // 오류 응답
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
         }
     }
+
 
     // 파일 이름 추출 메소드
     private String extractFileName(Part part) {
@@ -101,6 +110,27 @@ public class BookBoardUpdateController implements Controller {
             }
         }
         return "";
+    }
+
+    private String getJsonData(HttpServletRequest request) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            request.setCharacterEncoding("UTF-8");
+            Part jsonPart = request.getPart("bookData");
+
+            if (jsonPart != null) {
+                InputStream inputStream = jsonPart.getInputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    sb.append(new String(buffer, 0, bytesRead, "UTF-8"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 }
 
