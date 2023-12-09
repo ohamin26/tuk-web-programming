@@ -136,25 +136,24 @@ public class BookBoardDao {
         return querySuccessCheck;
     }
 
-    public int updateById(BookBoard bookboard) {
+    public int update(BookBoard bookboard) {
         open();
         int querySuccessCheck = 0;
         String sql = "UPDATE `BOOK_BOARD` " +
-                "SET user_id=?, isbn=?, title=?, price=?, place=?, content=?, book_status=?, is_sale=?, file_path=? " +
-                "WHERE id=?";
+                "SET isbn=?, title=?, price=?, place=?, content=?, book_status=?, is_sale=?, file_path=? " +
+                "WHERE user_id=?";
 
         try {
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, bookboard.getUser_id());
-            pstmt.setInt(2, bookboard.getISBN());
-            pstmt.setString(3, bookboard.getTitle());
-            pstmt.setInt(4, bookboard.getPrice());
-            pstmt.setString(5, bookboard.getPlace());
-            pstmt.setString(6, bookboard.getContent());
-            pstmt.setInt(7, bookboard.getBook_status());
-            pstmt.setBoolean(8, bookboard.getIs_sale());
-            pstmt.setString(9, bookboard.getFilePath());
-            pstmt.setInt(10, bookboard.getId()); // Assuming there is an ID field in your BOOK_BOARD table
+            pstmt.setInt(1, bookboard.getISBN());
+            pstmt.setString(2, bookboard.getTitle());
+            pstmt.setInt(3, bookboard.getPrice());
+            pstmt.setString(4, bookboard.getPlace());
+            pstmt.setString(5, bookboard.getContent());
+            pstmt.setInt(6, bookboard.getBook_status());
+            pstmt.setBoolean(7, bookboard.getIs_sale());
+            pstmt.setString(8, bookboard.getFilePath());
+            pstmt.setString(9, bookboard.getUser_id());
             querySuccessCheck = pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
