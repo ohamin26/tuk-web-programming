@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../css/header.css';
-import { hasFormSubmit } from '@testing-library/user-event/dist/utils';
 import { useEffect, useRef, useState } from 'react';
 import { LuSchool } from 'react-icons/lu';
 
@@ -26,7 +25,6 @@ export const Header = () => {
 
     const [login, setLogin] = useState(false);
     useEffect(() => {
-        // 컴포넌트가 마운트될 때 세션 스토리지에서 토큰을 불러옵니다.
         const storedToken = sessionStorage.getItem('token');
         if (storedToken) {
             setLogin(true);

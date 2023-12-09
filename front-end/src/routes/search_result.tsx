@@ -33,48 +33,6 @@ interface CommentInfo {
     user_login_id: string;
 }
 export const SearchResault = () => {
-    const dummyList = [
-        {
-            id: 1,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 2,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 3,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 4,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 5,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 6,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 7,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-        {
-            id: 8,
-            author: '김철수',
-            text: '테스트입니다.',
-        },
-    ].slice(0, 6);
     const { token } = useToken();
     let id: string | undefined;
     let user_id: string | undefined;
@@ -83,7 +41,6 @@ export const SearchResault = () => {
     const [boardInfo, setBoardInfo] = useState<BoardInfo | null>(null);
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [commentInfo, setCommentInfo] = useState<CommentInfo[]>([]);
-    const [loading, setLoading] = useState(true);
 
     if (token) {
         const decodedToken: JwtPayload & { id: string } = jwtDecode(token);
@@ -103,7 +60,6 @@ export const SearchResault = () => {
             ).json();
 
             setUserInfo(response);
-            setLoading(false);
         } catch (error: any) {
             console.log('유저정보 조회 실패');
         }
@@ -120,8 +76,6 @@ export const SearchResault = () => {
             setBoardInfo(response);
             getUserInfo(response.user_id);
             getBoardCommentInfo(response.id);
-
-            setLoading(false);
         } catch (error: any) {
             console.log('학교정보 조회 실패');
         }
@@ -159,8 +113,6 @@ export const SearchResault = () => {
             ).json();
 
             setCommentInfo(response);
-
-            setLoading(false);
         } catch (error: any) {
             console.log('학교정보 조회 실패');
         }
