@@ -22,7 +22,8 @@ import { useEffect } from 'react';
 import { MyPage } from './routes/my_page';
 import { MySaleList } from './routes/my_sale_list';
 import { MyBoardList } from './routes/my_board_list';
-import { BookBoardUpdate } from './routes/board_update';
+import { BookBoardUpdate } from './routes/book_board_update';
+import { BoardUpdate } from './routes/board_update';
 
 export const App = () => {
     const isRootPath = window.location.pathname;
@@ -67,8 +68,12 @@ export const App = () => {
                             element={<MyBoardList />}
                         ></Route>
                         <Route
-                            path="/board_update"
+                            path="/book_board_update"
                             element={<BookBoardUpdate />}
+                        ></Route>
+                        <Route
+                            path="/board_update"
+                            element={<BoardUpdate />}
                         ></Route>
                     </Routes>
                 </Router>
