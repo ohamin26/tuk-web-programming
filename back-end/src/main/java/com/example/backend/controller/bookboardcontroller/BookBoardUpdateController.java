@@ -35,8 +35,8 @@ public class BookBoardUpdateController implements Controller {
             Part filePart = request.getPart("image");
             if (filePart != null) {
                 String filename = extractFileName(filePart);
-                String savePath = request.getServletContext().getRealPath("/WEB-INF/static/image/");
-                String imageUrl = request.getContextPath() + "static/image/" + filename;
+                String savePath = request.getSession().getServletContext().getRealPath("/");
+                String imageUrl = request.getContextPath() + "/" + filename;
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
@@ -66,18 +66,18 @@ public class BookBoardUpdateController implements Controller {
                     String bookStatus = jsonMap.get("book_status");
 
                     // 기존의 게시판 정보를 가져와서 수정된 정보로 업데이트
-                    BookBoard existingBoard = bookBoardDao.findById(bookboard.getId());
-                    existingBoard.setUser_id(userId);
-                    existingBoard.setISBN(bookboard.getISBN());
-                    existingBoard.setTitle(title);
-                    existingBoard.setPrice(bookboard.getPrice());
-                    existingBoard.setPlace(place);
-                    existingBoard.setContent(text);
-                    existingBoard.setBook_status(Integer.valueOf(bookStatus));
-                    existingBoard.setIs_sale(true);
+                    Book book = bookDao.findByName(title);
+                    bookboard.setUser_id(userId);
+                    bookboard.setISBN(bookboard.getISBN());
+                    bookboard.setTitle(title);
+                    bookboard.setPrice(bookboard.getPrice());
+                    bookboard.setPlace(place);
+                    bookboard.setContent(text);
+                    bookboard.setBook_status(Integer.valueOf(bookStatus));
+                    bookboard.setIs_sale(true);
 
                     // 수정된 게시판 정보를 데이터베이스에 업데이트
-                    bookBoardDao.updateById(existingBoard);
+                    bookBoardDao.update(bookboard);
 
                 } catch (JsonProcessingException e) {
                     // JSON 파싱 오류 처리
@@ -88,7 +88,7 @@ public class BookBoardUpdateController implements Controller {
             }
 
             // 성공적인 응답
-            int querySuccessCheck = bookBoardDao.updateById(bookboard);
+            int querySuccessCheck = bookBoardDao.update(bookboard);
             response.getWriter().write("{\"querySuccessCheck\" : \"" + querySuccessCheck + "\"}");
 
         } catch (Exception e) {
