@@ -141,13 +141,29 @@ public class BoardDao {
         int querySuccessCheck =0;
         String sql = "delete from `BOARD` where id=? ";
         try {
+
+            ArrayList<BoardComment> comments = find_comments_on_board(id);
+
+            for (BoardComment comment : comments) {
+                deleteCommentById(comment.getId());
+            }
+
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
-            querySuccessCheck = pstmt.executeUpdate(); // insert 성공하면 1 실패하면 0
+            querySuccessCheck = pstmt.executeUpdate();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return querySuccessCheck;
+    }
+    private void deleteCommentById(int commentId) throws SQLException {
+        String commentDeleteSql = "delete from `BOARD_COMMENT` where id=? ";
+        try (PreparedStatement commentDeletePstmt = conn.prepareStatement(commentDeleteSql)) {
+            commentDeletePstmt.setInt(1, commentId);
+            commentDeletePstmt.executeUpdate();
+        }
     }
     
     // 보드에 있는 댓글까지 리턴
