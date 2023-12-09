@@ -53,7 +53,9 @@ export const MySaleList = () => {
         }
     };
     const onClickChange = async (index: number) => {
-        navigate(`/board_update?query=${bookInfo[index].id}`);
+        navigate(`/book_board_update?query=${bookInfo[index].id}`, {
+            state: bookInfo[index].id,
+        });
     };
     const getBookInfo = async () => {
         try {

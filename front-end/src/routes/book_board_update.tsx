@@ -3,21 +3,24 @@ import { useForm } from 'react-hook-form';
 import '../css/board_write.css';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { useToken } from '../context/TokenContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 interface BookInfo {
     isbn: string;
     name: string;
 }
-export const BookRegister = () => {
+
+export const BookBoardUpdate = () => {
     const {
         register,
         handleSubmit,
         formState: { isSubmitted, isSubmitting, errors },
     } = useForm();
 
+    const location = useLocation();
     const { token } = useToken();
-    const [bookInfo, setBookInfo] = useState<BookInfo[]>([]);
     const navigate = useNavigate();
+    const [bookInfo, setBookInfo] = useState<BookInfo[]>([]);
     let id: string | undefined;
     let user_id: string | undefined;
 
@@ -28,11 +31,14 @@ export const BookRegister = () => {
     }
     const [loading, setLoading] = useState(true);
     const bookStatusOptions = ['매우좋음', '좋음', '보통', '나쁨', '매우나쁨'];
+    const bookSale = ['판매중', '판매완료'];
     const getBookInfo = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/book');
-            const data = await response.json();
-            setBookInfo(data);
+            const response = await (
+                await fetch(`http://localhost:8080/api/book`)
+            ).json();
+
+            setBookInfo(response);
             setLoading(false);
         } catch (error: any) {
             console.log('유저정보 조회 실패');
@@ -47,23 +53,28 @@ export const BookRegister = () => {
             const selectedSchoolIndex = bookStatusOptions.findIndex(
                 (book_status) => book_status === data.book_status
             );
-            const school_id = String(selectedSchoolIndex + 1);
+            const selectedBookIndex = bookSale.findIndex(
+                (book_status) => book_status === data.book_sale
+            );
+            const isSale = selectedBookIndex === 0 ? true : false;
             const bookData = {
+                id: location.state,
                 title: data.title,
                 text: data.text,
                 user_id: id,
-                book_status: school_id,
+                book_status: selectedSchoolIndex,
+                book_sale: isSale,
                 place: data.place,
+                price: data.price,
             };
             formData.append('bookData', JSON.stringify(bookData));
 
-            // 파일 데이터 추가
             formData.append('image', data.image[0]);
 
             console.log(data.image[0]);
 
             const response = await fetch(
-                'http://localhost:8080/api/bookboard/register',
+                'http://localhost:8080/api/bookboard/update',
                 {
                     method: 'POST',
                     body: formData,
@@ -75,11 +86,13 @@ export const BookRegister = () => {
             if (!response.ok) {
                 throw new Error('서버 오류');
             }
-            alert('판매글이 성공적으로 저장되었습니다.');
-            navigate('/book_list');
+            console.log(JSON.stringify(bookData));
+            alert('판매글이 성공적으로 수정되었습니다.');
+            navigate('/my_sale_list');
         } catch (error: any) {
+            console.log(location.state);
             console.log(data);
-            alert('판매글 저장 실패!');
+            alert('판매글 수정 실패!');
         }
     };
     return (
@@ -129,6 +142,29 @@ export const BookRegister = () => {
                                 선택하세요
                             </option>
                             {bookStatusOptions.map((status, index) => (
+                                <option key={index} value={status}>
+                                    {status}
+                                </option>
+                            ))}
+                        </select>
+                        <label htmlFor="book_sale">판매여부 </label>
+                        <select
+                            id="book_sale"
+                            aria-invalid={
+                                isSubmitted
+                                    ? errors.isbn
+                                        ? 'true'
+                                        : 'false'
+                                    : undefined
+                            }
+                            {...register('book_sale', {
+                                required: '필수 항목입니다.',
+                            })}
+                        >
+                            <option value="" disabled>
+                                선택하세요
+                            </option>
+                            {bookSale.map((status, index) => (
                                 <option key={index} value={status}>
                                     {status}
                                 </option>

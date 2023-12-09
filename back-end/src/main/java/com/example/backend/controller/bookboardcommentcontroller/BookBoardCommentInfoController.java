@@ -20,6 +20,7 @@ public class BookBoardCommentInfoController implements Controller {
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
         ArrayList<BookBoardComment> comments = bookBoardCommentDao.find_comments_on_book_board(Integer.parseInt(request.getParameter("book_board_id")));
         //Json 생성 라이브러리 사용

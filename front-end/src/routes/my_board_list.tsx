@@ -21,10 +21,14 @@ export const MyBoardList = () => {
         id = decodedToken.id;
         user_id = decodedToken.sub;
     }
-    const [loading, setLoading] = useState(true);
     const [boardInfo, setBoardInfo] = useState<BoardInfo[]>([]);
     const onClickBtn = (item: string | number) => {
         navigate(`/board_detail?query=` + item, { state: { item } });
+    };
+    const onClickChange = async (index: number) => {
+        navigate(`/board_update?query=` + boardInfo[index].id, {
+            state: { id },
+        });
     };
     const onClick = async (index: number) => {
         try {
@@ -42,7 +46,7 @@ export const MyBoardList = () => {
             console.log(JSON.stringify(boardInfo[index]));
             console.log(response);
             alert('게시물삭제 완료!');
-            //window.location.reload();
+            window.location.reload();
         } catch (error: any) {
             console.log(boardInfo[index]);
             console.log('게시물삭제 실패');
@@ -55,7 +59,6 @@ export const MyBoardList = () => {
             ).json();
 
             setBoardInfo(response);
-            setLoading(false);
         } catch (error: any) {
             console.log('게시판 조회 실패');
         }
@@ -68,9 +71,10 @@ export const MyBoardList = () => {
             <table className="board">
                 <colgroup>
                     <col width="5%" />
-                    <col width="40%" />
+                    <col width="30%" />
                     <col width="10%" />
-                    <col width="20%" />
+                    <col width="15%" />
+                    <col width="15%" />
                     <col width="15%" />
                 </colgroup>
                 <thead>
@@ -90,6 +94,9 @@ export const MyBoardList = () => {
                         <th>
                             <span>삭제</span>
                         </th>
+                        <th>
+                            <span>수정</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,6 +115,13 @@ export const MyBoardList = () => {
                                 <td>{item.create_date.slice(0, 10)}</td>
                                 <td>
                                     <button onClick={() => onClick(index)}>
+                                        x
+                                    </button>
+                                </td>
+                                <td>
+                                    <button
+                                        onClick={() => onClickChange(index)}
+                                    >
                                         x
                                     </button>
                                 </td>

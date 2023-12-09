@@ -26,16 +26,15 @@ public class BookBoardRegisterController implements Controller {
     BookDao bookDao = new BookDao();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String fileName;
-        InputStream fileContent;
+
         try {
             BookBoard bookboard = new BookBoard();
             // 파일 업로드 처리
             Part filePart = request.getPart("image");
             if (filePart != null) {
                 String filename = extractFileName(filePart);
-                String savePath = request.getServletContext().getRealPath("/WEB-INF/static/image/");
-                String imageUrl = request.getContextPath() + "static/image/" + filename;
+                String savePath = request.getSession().getServletContext().getRealPath("/");
+                String imageUrl = request.getContextPath() + "/" + filename;
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
@@ -78,7 +77,6 @@ public class BookBoardRegisterController implements Controller {
                     bookboard.setContent(text);
                     bookboard.setBook_status(Integer.valueOf(bookStatus));
                     bookboard.setIs_sale(true);
-                    bookBoardDao.register(bookboard);
 
                 } catch (JsonProcessingException e) {
                     // JSON 파싱 오류 처리
