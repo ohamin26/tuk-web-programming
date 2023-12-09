@@ -62,18 +62,23 @@ public class BookBoardUpdateController implements Controller {
                     String title = jsonMap.get("title");
                     String text = jsonMap.get("text");
                     String userId = jsonMap.get("user_id");
+                    String price = jsonMap.get("price");
                     String place = jsonMap.get("place");
+                    int id = Integer.parseInt(jsonMap.get("id"));
                     String bookStatus = jsonMap.get("book_status");
+                    Boolean isSale = Boolean.valueOf(jsonMap.get("book_sale"));
 
                     // 기존의 게시판 정보를 가져와서 수정된 정보로 업데이트
                     Book book = bookDao.findByName(title);
+                    bookboard.setId(id);
                     bookboard.setUser_id(userId);
-                    bookboard.setISBN(bookboard.getISBN());
                     bookboard.setTitle(title);
                     bookboard.setPrice(bookboard.getPrice());
                     bookboard.setPlace(place);
                     bookboard.setContent(text);
+                    bookboard.setPrice(Integer.valueOf(price));
                     bookboard.setBook_status(Integer.valueOf(bookStatus));
+                    bookboard.setIs_sale(isSale);
                     bookboard.setIs_sale(true);
 
                     // 수정된 게시판 정보를 데이터베이스에 업데이트
