@@ -2,6 +2,7 @@ package com.example.backend.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -12,6 +13,12 @@ public class CorsFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+
+        // 응답 헤더 설정 ,인코딩설정
+        httpResponse.setContentType("application/json");
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpRequest.setCharacterEncoding("UTF-8");
         // CORS 헤더 추가
         httpResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         httpResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with, origin, content-type, accept,Authorization");

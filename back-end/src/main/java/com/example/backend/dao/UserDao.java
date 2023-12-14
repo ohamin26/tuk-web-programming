@@ -12,18 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao {
+
+
     Connection conn = null;
     PreparedStatement pstmt;
-    String JDBC_DRIVER = "org.h2.Driver";
-    String JDBC_URL = "jdbc:h2:tcp://localhost/~/test";
+    public UserDao(Connection conn) {
+        this.conn = conn;
+    }
 
     public void open() {
-        try {
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(JDBC_URL, "sa", "1234");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     //회원정보

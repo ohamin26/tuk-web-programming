@@ -5,20 +5,26 @@ import com.example.backend.dao.UserDao;
 import com.example.backend.json.JsonParsing;
 import com.example.backend.model.User;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Map;
 
 public class UserJoinController implements Controller {
-    UserDao userDao =new UserDao();
+    UserDao userDao ;
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new User();
         // 응답 헤더 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+
+        ServletContext sc = request.getServletContext();
+        Connection conn = (Connection)sc.getAttribute("DBConnection");
+        userDao = new UserDao(conn);
 
         Map<String, String> jsonMap = JsonParsing.parsing(request);
         //user 매핑
