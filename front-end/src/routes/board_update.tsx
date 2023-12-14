@@ -47,7 +47,7 @@ export const BoardUpdate = () => {
     }, []);
     const onSubmit = async (data: any) => {
         try {
-            data.id = String(location.state.id);
+            data.id = String(location.state.send_id);
             const response = await fetch(
                 'http://localhost:8080/api/board/update',
                 {
@@ -63,6 +63,8 @@ export const BoardUpdate = () => {
             if (!response.ok) {
                 throw new Error('서버 오류');
             }
+            console.log(JSON.stringify(data));
+            console.log(location.state);
             alert('판매글이 성공적으로 수정되었습니다.');
             navigate('/my_board_list');
             window.location.reload();
@@ -113,10 +115,10 @@ export const BoardUpdate = () => {
                                 required: '내용을 입력해주세요.',
                             })}
                         />
-                        {errors.text && (
+                        {errors.content && (
                             <small role="alert">
-                                {typeof errors.text.message === 'string' ? (
-                                    <span>{errors.text.message}</span>
+                                {typeof errors.content.message === 'string' ? (
+                                    <span>{errors.content.message}</span>
                                 ) : null}
                             </small>
                         )}

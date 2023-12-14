@@ -26,8 +26,9 @@ export const MyBoardList = () => {
         navigate(`/board_detail?query=` + item, { state: { item } });
     };
     const onClickChange = async (index: number) => {
-        navigate(`/board_update?query=` + boardInfo[index].id, {
-            state: { id },
+        const send_id = boardInfo[index].id;
+        navigate(`/board_update?query=` + send_id, {
+            state: { send_id },
         });
     };
     const onClick = async (index: number) => {
