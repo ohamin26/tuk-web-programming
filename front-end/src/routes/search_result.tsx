@@ -41,7 +41,7 @@ export const SearchResault = () => {
     const [boardInfo, setBoardInfo] = useState<BoardInfo | null>(null);
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [commentInfo, setCommentInfo] = useState<CommentInfo[]>([]);
-
+    const bookStatusOptions = ['매우좋음', '좋음', '보통', '나쁨', '매우나쁨'];
     if (token) {
         const decodedToken: JwtPayload & { id: string } = jwtDecode(token);
         id = decodedToken.id;
@@ -181,7 +181,13 @@ export const SearchResault = () => {
                     </dl>
                     <dl>
                         <dt>책상태</dt>
-                        <dd>{boardInfo?.book_status}</dd>
+                        <dd>
+                            {boardInfo?.book_status == null
+                                ? ''
+                                : bookStatusOptions[
+                                      Number(boardInfo?.book_status)
+                                  ]}
+                        </dd>
                     </dl>
                     <dl>
                         <dt>가격</dt>
