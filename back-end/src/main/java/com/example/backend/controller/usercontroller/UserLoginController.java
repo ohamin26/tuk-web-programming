@@ -8,16 +8,18 @@ import com.example.backend.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Date;
 import java.util.Map;
 
 public class UserLoginController implements Controller {
     User user = new User();
-    UserDao userDao = new UserDao();
+    UserDao userDao ;
     private static final String SECRET_KEY = "webServiceProgramingProjectCodeByYSJ2018148023";//비밀키
     private static final long EXPIRATION_TIME = 360000; // 유효기간 1시간
     @Override
@@ -31,6 +33,10 @@ public class UserLoginController implements Controller {
 
         String inputPassword = jsonMap.get("password");
         String inputUserId= jsonMap.get("userId");
+
+        ServletContext sc = request.getServletContext();
+        Connection conn = (Connection)sc.getAttribute("DBConnection");
+        userDao = new UserDao(conn);
 
         //입력 아이디로 비밀번호,id 가져오기
         User user = userDao.findPasswordByUserId(inputUserId);

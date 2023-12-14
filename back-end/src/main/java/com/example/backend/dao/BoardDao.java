@@ -2,10 +2,7 @@ package com.example.backend.dao;
 
 import com.example.backend.model.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,6 +160,8 @@ public class BoardDao {
         try (PreparedStatement commentDeletePstmt = conn.prepareStatement(commentDeleteSql)) {
             commentDeletePstmt.setInt(1, commentId);
             commentDeletePstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
     
