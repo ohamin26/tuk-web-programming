@@ -12,21 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao {
-
-
     Connection conn = null;
     PreparedStatement pstmt;
     public UserDao(Connection conn) {
         this.conn = conn;
     }
 
-    public void open() {
-
-    }
 
     //회원정보
     public User findByID(int id) {
-        open();
         User user = new User();
         String sql = "SELECT * FROM \"USER\" WHERE id = ?";
         try {
@@ -48,7 +42,6 @@ public class UserDao {
     }
     //회원가입
     public int join(User user) {
-        open();
         int querySuccessCheck =0;
         String sql = "insert into `USER`(user_id, password, name, phoneNumber, nickName, school_id, major_id) " +
                 "values(?,?,?,?,?,?,?)";
@@ -69,7 +62,6 @@ public class UserDao {
     }
 
     public User findPasswordByUserId(String userId) {
-        open();
         String sql = "select id, password from `USER` where user_Id = ?";
         User user = new User();
         int id;
@@ -88,7 +80,6 @@ public class UserDao {
         return user;
     }
     public int deleteById(int id) {
-        open();
         String sql = "delete from `USER` where id = ?";
         int querySuccessCheck =0;
 
@@ -105,7 +96,6 @@ public class UserDao {
     //회원이 작성한 글
     public List<BookBoard> findBookBoardByUserId(int userId) {
         ArrayList<BookBoard> bookBoards = new ArrayList<>();
-        open();
         String sql = "select * from Book_Board where User_id = ?";
         try {
             pstmt = conn.prepareStatement(sql);

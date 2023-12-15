@@ -56,6 +56,8 @@ public class FrontController extends HttpServlet  {
         ControllerMap.put("/api/bookboard/delete", new BookBoardDeleteController());
         ControllerMap.put("/api/bookboard", new BookBoardInfoController());
         ControllerMap.put("/api/bookboard/all", new BookBoardTotalController());
+        ControllerMap.put("/api/bookboard/title", new BookBoardSearchController());
+
         //book
         ControllerMap.put("/api/book", new BookInfoController());
 

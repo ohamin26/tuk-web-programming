@@ -161,6 +161,39 @@ public class BookBoardDao {
 
         return querySuccessCheck;
     }
+    public List<BookBoard> findByTitle(String title) {
+        open();
+        List<BookBoard> bookList = new ArrayList<>();
+        String sql = "SELECT * FROM BOOK_BOARD where title LIKE ?";
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + title + "%");
+
+
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                BookBoard bookboard = new BookBoard();
+                bookboard.setId(rs.getInt("id"));
+                bookboard.setUser_id(rs.getString("user_id"));
+                bookboard.setISBN(rs.getInt("isbn"));
+                bookboard.setTitle(rs.getString("title"));
+                bookboard.setPrice(rs.getInt("price"));
+                bookboard.setPlace(rs.getString("place"));
+                bookboard.setContent(rs.getString("content"));
+                bookboard.setBook_status(rs.getInt("book_status"));
+                bookboard.setIs_sale(rs.getBoolean("is_sale"));
+                bookboard.setFilePath(rs.getString("file_path"));
+
+                bookList.add(bookboard);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
 
 
 }
