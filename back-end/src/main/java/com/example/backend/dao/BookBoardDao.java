@@ -164,13 +164,11 @@ public class BookBoardDao {
     public List<BookBoard> findByTitle(String title) {
         open();
         List<BookBoard> bookList = new ArrayList<>();
-        String sql = "SELECT * FROM BOOK_BOARD where title LIKE ?";
+        String sql = "SELECT * FROM BOOK_BOARD where title = ?";
 
         try {
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, "%" + title + "%");
-
-
+            pstmt.setString(1, title);
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
