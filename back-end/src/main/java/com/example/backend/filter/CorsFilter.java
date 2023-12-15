@@ -8,13 +8,11 @@ import java.io.IOException;
 
 @WebFilter("/*")
 public class CorsFilter implements Filter {
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-
         // 응답 헤더 설정 ,인코딩설정
         httpResponse.setContentType("application/json");
         httpResponse.setCharacterEncoding("UTF-8");

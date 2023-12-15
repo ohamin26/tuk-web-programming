@@ -10,16 +10,13 @@ import java.sql.SQLException;
 
 @WebListener
 public class DatabaseInitListener implements ServletContextListener {
-
     private static Connection conn;
-
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sc = sce.getServletContext();
-        String url = "jdbc:h2:tcp://localhost/~/test"; // 여기에 실제 DB URL을 입력하세요.
-        String username = "sa"; // 여기에 실제 DB 사용자 이름을 입력하세요.
-        String password = "1234"; // 여기에 실제 DB 비밀번호를 입력하세요.
-
+        String url = "jdbc:h2:tcp://localhost/~/test";
+        String username = "sa";
+        String password = "1234";
         try {
             Class.forName("org.h2.Driver");
             conn = DriverManager.getConnection(url, username, password);
