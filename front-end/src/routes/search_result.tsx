@@ -69,14 +69,21 @@ export const SearchResault = () => {
             const query = location.state.item
                 ? location.state.item
                 : location.state.content;
-            const response = await (
-                await fetch(`http://localhost:8080/api/bookboard?id=${query}`)
+            const response = await (query === location.state.item
+                ? await fetch(`http://localhost:8080/api/bookboard?id=${query}`)
+                : await fetch(
+                      `http://localhost:8080/api/bookboard/title?title=${query}`
+                  )
             ).json();
 
-            setBoardInfo(response);
+            console.log(response);
+            query === location.state.item
+                ? setBoardInfo(response)
+                : setBoardInfo(response[0]);
             getUserInfo(response.user_id);
             getBoardCommentInfo(response.id);
         } catch (error: any) {
+            console.log(location.state.content);
             console.log('학교정보 조회 실패');
         }
     };
