@@ -17,9 +17,9 @@
 
 <div align="center">
 
-| **오하민** | 
-| :------: |  
-| [<img width="140px" src="https://avatars.githubusercontent.com/u/113972482?v=4" height=150 width=150> <br/> @ohamin26](https://github.com/ohamin26) |
+| **오하민** | **고수민** | **서종원** | **유성주** |
+| :------: | :------: | :------: | :------: |
+| [<img width="140px" src="https://avatars.githubusercontent.com/u/113972482?v=4" height=150 width=150> <br/> @ohamin26](https://github.com/ohamin26) | [<img width="140px" src="https://avatars.githubusercontent.com/u/80901129?v=4" height=150 width=150> <br/> @Gosuke716](https://github.com/Gosuke716) | [<img width="140px" src="https://avatars.githubusercontent.com/u/132224876?v=4" height=150 width=150> <br/> @jonejtwojthree](https://github.com/jonejtwojthree) | [<img width="140px" src="https://avatars.githubusercontent.com/u/60686827?v=4" height=150 width=150> <br/> @yu9738](https://github.com/yu9738) |
 
 </div>
 
@@ -42,18 +42,7 @@
 - 서버 로직이 복잡하지 않기에 빠르게 개발가능한 Servlet을 선택하였습니다.
 
 ### h2
-- db량이 많지 않아 빠르고 간단하게 개발 가능한 h2 선택하였습니다.
-
-### 브랜치 전략
-
-- Git-flow를 채택하였으며, main, 이름으로 구분하여 진행하였습니다.
-  - **main** 배포용으로 최종적으로 적용할 기능만을 합쳤습니다.
-  - **팀원이름** 빠르게 기능만을 개발하기 위해 개인 별 브랜치를 활용해 작업하였습니다. 
-
-<br>
-
-## 3. 프로젝트 구조
-- 보이는데 지장없는 일반파일 제
+- db량이 많지 않아 빠르고 간단하게 은 제외하였습니다.
 ```
 │
 ├── back-end
